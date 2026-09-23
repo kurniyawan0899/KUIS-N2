@@ -132,7 +132,44 @@ function quiz(){
  $('saveCard').addEventListener('click',()=>toggleSaved(q));$('exitQuiz').addEventListener('click',quitQuiz);
  clearInterval(quizTimer);quizTimer=setInterval(()=>{if(!currentSession)return;currentSession.left--;const c=$('clock');if(c)c.textContent=currentSession.left;if(currentSession.left<=0)answer(null,correct);},1000);
 }
-function answer(value,correct){clearInterval(quizTimer);if(!currentSession)return;const ok=value===correct;currentSession.score+=ok?1:0;currentSession.answers.push(ok);const buttons=[...document.querySelectorAll('.ans')];buttons.forEach(b=>{b.disabled=true;if(b.dataset.answer===correct)b.classList.add('correct');else if(b.dataset.answer===value)b.classList.add('wrong');});const f=$('feedback');if(f)f.textContent=value===null?'Waktu habis ⏱':(ok?'Benar ✓':'Kurang tepat ✗');state.active=currentSession;save();setTimeout(()=>{if(!currentSession)return;currentSession.i++;currentSession.left=currentSession.timer;save();quiz();},650);}
+function answer(value,correct){
+  if(!currentSession)return;
+
+  const s=currentSession;
+  const item=s.items[s.i];
+  const ok=value!==null && value===correct;
+  const day=s.day;
+
+  const qp=state.quizProgress[day]||{seen:[],repeat:[]};
+  const rep=new Set(qp.repeat||[]);
+
+  if(ok){
+    s.score++;
+    rep.delete(String(item.id));
+  }else{
+    rep.add(String(item.id));
+  }
+
+  qp.repeat=[...rep];
+  state.quizProgress[day]=qp;
+
+  s.answers.push({
+    id:item.id,
+    correct:ok,
+    repeat:item._repeat||false
+  });
+
+  save();
+
+  s.i++;
+
+  if(s.i>=s.items.length){
+    finish();
+  }else{
+    s.left=s.timer;
+    quiz();
+  }
+}
 function finish(){clearInterval(quizTimer);const s=currentSession;state.completed[s.id]={day:s.day,score:s.score,total:s.items.length,date:new Date().toISOString()};delete state.active;save();currentSession=null;$('app').innerHTML=`<div class="card"><h2>Quiz Selesai 🎉</h2><div class="big">${s.score}/${s.items.length}</div><p class="sub">Day ${s.day}</p><div class="row" style="justify-content:center"><button class="btn primary" id="again">Kembali ke Quiz</button><button class="btn" id="flashSaved">Kartu Tersimpan</button></div></div>`;$('again').addEventListener('click',home);$('flashSaved').addEventListener('click',savedCards);}
 function quitQuiz(){clearInterval(quizTimer);if(currentSession){state.active=currentSession;save();}currentSession=null;home();notice('Progress tersimpan. Kamu bisa melanjutkannya dari menu Quiz.');}
 function notice(t){const n=document.createElement('div');n.className='notice';n.textContent=t;$('app').prepend(n);setTimeout(()=>n.remove(),2500);}
