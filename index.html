@@ -29,9 +29,9 @@
 const DATA=window.KANJI_DATA||[];
 const STORE='kanjiQuizN2_v2';
 const $=id=>document.getElementById(id);
-let state={completed:{},sessions:{},custom:[],savedCards:{},active:null};
+let state={completed:{},sessions:{},custom:[],savedCards:{},active:null,quizProgress:{}};
 try{state=Object.assign(state,JSON.parse(localStorage.getItem(STORE)||'{}'));}catch(e){}
-state.completed=state.completed||{};state.sessions=state.sessions||{};state.custom=state.custom||[];state.savedCards=state.savedCards||{};
+state.completed=state.completed||{};state.sessions=state.sessions||{};state.custom=state.custom||[];state.savedCards=state.savedCards||{};state.quizProgress=state.quizProgress||{};
 let currentSession=null,flashIndex=0,flashDay=1,flashFlipped=false,listDay=1,quizTimer=null;
 const all=()=>DATA.concat(state.custom);
 const dayData=d=>all().filter(x=>Number(x.day)===Number(d));
