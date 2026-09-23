@@ -70,7 +70,51 @@ function quizMenu(){
  </div>`;
  $('startQuiz').addEventListener('click',start);
  if(active)$('resumeQuiz').addEventListener('click',()=>{currentSession=state.active;quiz();});
-}function start(){
+function start(day,mode,timer,batchSize){
+  const pool=dayData(day);
+  const qp=state.quizProgress[day]||{seen:[],repeat:[]};
+  const seen=new Set(qp.seen||[]);
+  const repeat=new Set(qp.repeat||[]);
+
+  let fresh=shuffle(pool.filter(x=>!seen.has(String(x.id))));
+  fresh=fresh.slice(0,Math.min(batchSize,fresh.length));
+
+  fresh.forEach(x=>seen.add(String(x.id)));
+
+  let items=fresh.map(x=>({...x,_repeat:false}));
+
+  if(!items.length){
+    items=shuffle(pool.filter(x=>repeat.has(String(x.id))))
+      .slice(0,batchSize)
+      .map(x=>({...x,_repeat:true}));
+  }
+
+  if(!items.length){
+    alert('この日の問題はすべてマスターしました！');
+    quizMenu();
+    return;
+  }
+
+  qp.seen=[...seen];
+  state.quizProgress[day]=qp;
+
+  currentSession={
+    id:Date.now(),
+    day,
+    mode,
+    timer,
+    batchSize,
+    items,
+    i:0,
+    score:0,
+    left:timer,
+    answers:[]
+  };
+
+  state.active=currentSession;
+  save();
+  quiz();
+}
  const d=Number($('day').value),pool=shuffle(dayData(d));if(!pool.length){alert('Day ini belum memiliki kosakata.');return;}
  const n=Math.min(Number($('num').value),pool.length);currentSession={id:Date.now(),day:d,mode:$('mode').value,timer:Number($('timer').value),items:pool.slice(0,n),i:0,score:0,left:Number($('timer').value),answers:[]};state.active=currentSession;save();quiz();
 }
