@@ -68,8 +68,16 @@ function quizMenu(){
  </div>
  <button class="btn primary" id="startQuiz" style="margin-top:16px;width:100%">Mulai Quiz →</button>
  </div>`;
- $('startQuiz').addEventListener('click',start);
- if(active)$('resumeQuiz').addEventListener('click',()=>{currentSession=state.active;quiz();});
+ $('startQuiz').addEventListener('click',()=>{
+  start(
+    Number($('day').value),
+    $('mode').value,
+    Number($('timer').value),
+    Number($('num').value)
+  );
+});
+if(active)$('resumeQuiz').addEventListener('click',()=>{currentSession=state.active;quiz();});
+}
 function start(day,mode,timer,batchSize){
   const pool=dayData(day);
   const qp=state.quizProgress[day]||{seen:[],repeat:[]};
