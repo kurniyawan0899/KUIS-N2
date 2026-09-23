@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="id">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -9,107 +9,90 @@
 <link rel="manifest" href="manifest.webmanifest">
 <title>Kanji Quiz N2</title>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#f4f7fb;color:#111827;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-header{background:#111827;color:#fff;padding:14px 16px;position:sticky;top:0;z-index:5}.head{max-width:900px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:10px}.brand{font-weight:800;font-size:20px}
-main{max-width:900px;margin:auto;padding:14px 12px 60px}.nav{display:flex;gap:7px;overflow:auto;padding:8px 0}.btn{border:1px solid #cbd5e1;background:#fff;border-radius:10px;padding:10px 13px;cursor:pointer}.btn.primary{background:#111827;color:#fff;border-color:#111827}.btn.danger{color:#b91c1c}
-.card{background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:16px;margin:10px 0;box-shadow:0 4px 16px #0f172a0a}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}.label{display:block;font-weight:700;font-size:13px;margin-bottom:5px}.field{width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:9px;background:#fff}.muted{color:#64748b}.big{font-size:64px;font-weight:800;text-align:center;margin:25px 0 5px}.sub{text-align:center;font-size:21px;margin:5px}.answers{display:grid;gap:9px;margin-top:18px}.ans{padding:14px;border:1px solid #cbd5e1;background:#fff;border-radius:11px;text-align:left;font-size:16px}.ans:active{transform:scale(.99)}.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.between{justify-content:space-between}.bar{height:8px;background:#e2e8f0;border-radius:99px;overflow:hidden;margin:10px 0}.bar div{height:100%;background:#111827}.pill{background:#e2e8f0;border-radius:99px;padding:4px 8px;font-size:12px}.flash{min-height:230px;display:flex;align-items:center;justify-content:center;text-align:center;border:1px solid #cbd5e1;border-radius:16px;cursor:pointer}.flash .big{margin:0}.tablewrap{overflow:auto}.table{width:100%;border-collapse:collapse}.table td,.table th{padding:9px;border-bottom:1px solid #e2e8f0;text-align:left;white-space:nowrap}.hidden{display:none}.notice{padding:10px;border-radius:9px;background:#eff6ff;color:#1e40af;margin:8px 0}.stats{font-size:13px}
-@media(max-width:600px){.big{font-size:52px}.head{align-items:flex-start}.btn{padding:9px 11px}}
+*{box-sizing:border-box}body{margin:0;background:#f4f7fb;color:#111827;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,select,input{font:inherit}header{background:#111827;color:#fff;padding:14px 16px;position:sticky;top:0;z-index:5}.head{max-width:900px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:10px}.brand{font-weight:800;font-size:20px}main{max-width:900px;margin:auto;padding:14px 12px 70px}.nav{display:flex;gap:7px;overflow:auto;padding:8px 0}.btn{border:1px solid #cbd5e1;background:#fff;border-radius:10px;padding:10px 13px;cursor:pointer;touch-action:manipulation}.btn:active{transform:scale(.98)}.btn.primary{background:#111827;color:#fff;border-color:#111827}.btn.danger{color:#b91c1c}.card{background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:16px;margin:10px 0;box-shadow:0 4px 16px #0f172a0a}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}.label{display:block;font-weight:700;font-size:13px;margin-bottom:5px}.field{width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:9px;background:#fff}.muted{color:#64748b}.big{font-size:64px;font-weight:800;text-align:center;margin:25px 0 5px}.sub{text-align:center;font-size:21px;margin:5px}.answers{display:grid;gap:9px;margin-top:18px}.ans{padding:15px;border:1px solid #cbd5e1;background:#fff;border-radius:11px;text-align:left;font-size:16px;cursor:pointer;touch-action:manipulation}.ans.correct{border-color:#16a34a;background:#dcfce7}.ans.wrong{border-color:#dc2626;background:#fee2e2}.ans:disabled{cursor:default;opacity:1}.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.between{justify-content:space-between}.bar{height:8px;background:#e2e8f0;border-radius:99px;overflow:hidden;margin:10px 0}.bar div{height:100%;background:#111827}.pill{background:#e2e8f0;border-radius:99px;padding:4px 8px;font-size:12px}.tablewrap{overflow:auto}.table{width:100%;border-collapse:collapse}.table td,.table th{padding:9px;border-bottom:1px solid #e2e8f0;text-align:left;white-space:nowrap}.notice{padding:10px;border-radius:9px;background:#eff6ff;color:#1e40af;margin:8px 0}.stats{font-size:13px}.feedback{text-align:center;font-weight:700;margin:12px 0}.saved{background:#fef3c7;border-color:#f59e0b}.resume{border-left:4px solid #111827}.small{font-size:13px}.flash-wrap{perspective:1000px;margin:14px 0}.flash{min-height:260px;position:relative;transform-style:preserve-3d;transition:transform .45s ease;cursor:pointer;touch-action:manipulation}.flash.flipped{transform:rotateY(180deg)}.flash-face{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;border:1px solid #cbd5e1;border-radius:16px;background:#fff;backface-visibility:hidden;-webkit-backface-visibility:hidden;padding:20px}.flash-back{transform:rotateY(180deg)}.flash-face .big{margin:0}.flash-nav{display:flex;justify-content:space-between;align-items:center;gap:8px}.star{font-size:24px;line-height:1;border:0;background:transparent;cursor:pointer}.empty{text-align:center;padding:25px}.hidden{display:none!important}@media(max-width:600px){.big{font-size:52px}.head{align-items:flex-start}.btn{padding:9px 11px}}
 </style>
 </head>
 <body>
 <header><div class="head"><div class="brand">漢字 Quiz N2</div><div id="count" class="stats"></div></div></header>
 <main>
 <div id="nav" class="nav">
-<button class="btn" onclick="show('home')">Quiz</button><button class="btn" onclick="show('flash')">Flashcards</button><button class="btn" onclick="show('list')">Search/List</button><button class="btn" onclick="show('manage')">Database</button>
+<button class="btn" data-view="home">Quiz</button><button class="btn" data-view="flash">Flashcards</button><button class="btn" data-view="list">Search/List</button><button class="btn" data-view="manage">Database</button>
 </div>
 <div id="app"></div>
 </main>
 <script src="data.js"></script>
 <script>
+(function(){
+'use strict';
 const DATA=window.KANJI_DATA||[];
-const STORE="kanjiQuizN2_v1";
-let state=JSON.parse(localStorage.getItem(STORE)||'{}');
-state.completed=state.completed||{}; state.sessions=state.sessions||{}; state.custom=state.custom||[];
-let currentSession=null, flashIndex=0, flashDay=1, flashBack=false, listDay=1;
-
-function save(){localStorage.setItem(STORE,JSON.stringify(state))}
-function all(){return DATA.concat(state.custom)}
-function dayData(d){return all().filter(x=>x.day===d)}
-function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
-function options(correct,vals){return shuffle([correct,...shuffle([...new Set(vals.filter(v=>v&&v!==correct))]).slice(0,3)])}
-function show(view){
- if(view==='home') home(); if(view==='flash') flash(); if(view==='list') list(); if(view==='manage') manage();
-}
+const STORE='kanjiQuizN2_v2';
+const $=id=>document.getElementById(id);
+let state={completed:{},sessions:{},custom:[],savedCards:{},active:null};
+try{state=Object.assign(state,JSON.parse(localStorage.getItem(STORE)||'{}'));}catch(e){}
+state.completed=state.completed||{};state.sessions=state.sessions||{};state.custom=state.custom||[];state.savedCards=state.savedCards||{};
+let currentSession=null,flashIndex=0,flashDay=1,flashFlipped=false,listDay=1,quizTimer=null;
+const all=()=>DATA.concat(state.custom);
+const dayData=d=>all().filter(x=>Number(x.day)===Number(d));
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const save=()=>localStorage.setItem(STORE,JSON.stringify(state));
+const shuffle=a=>[...a].sort(()=>Math.random()-.5);
+const options=(correct,vals)=>shuffle([correct,...shuffle([...new Set(vals.filter(v=>v&&v!==correct))]).slice(0,3)]);
+function setCount(){$('count').textContent=all().length+' vocab';}
+function show(view){if(quizTimer)clearInterval(quizTimer);if(view==='home')home();else if(view==='flash')flash();else if(view==='list')list();else manage();}
+$('nav').addEventListener('click',e=>{const b=e.target.closest('[data-view]');if(b){currentSession=null;show(b.dataset.view);}});
 function home(){
+ setCount();
  const days=[...Array(35)].map((_,i)=>i+1);
- document.getElementById("count").textContent=all().length+" vocab";
- app.innerHTML=`<div class="card"><h2>Start Quiz</h2><div class="grid">
+ const active=state.active;
+ $('app').innerHTML=`${active?`<div class="card resume"><h3>Quiz tersimpan</h3><p>Day ${active.day} · Soal ${active.i+1}/${active.items.length} · Skor ${active.score}</p><div class="row"><button class="btn primary" id="resumeBtn">Lanjutkan</button><button class="btn danger" id="discardBtn">Hapus sesi</button></div></div>`:''}
+ <div class="card"><h2>Start Quiz</h2><div class="grid">
  <div><label class="label">Day / Lesson</label><select id="day" class="field">${days.map(d=>`<option value="${d}">Day ${d} (${dayData(d).length}/100)</option>`).join('')}</select></div>
  <div><label class="label">Mode</label><select id="mode" class="field"><option value="kr">Kanji → Reading</option><option value="rk">Reading → Kanji</option><option value="km">Kanji → Meaning</option><option value="mix">Mixed</option></select></div>
  <div><label class="label">Questions</label><select id="num" class="field">${[5,10,20,30,50,100].map(n=>`<option>${n}</option>`).join('')}</select></div>
  <div><label class="label">Timer / question</label><select id="timer" class="field">${[5,10,15,20,30,45,60].map(n=>`<option ${n===20?'selected':''}>${n}</option>`).join('')}</select></div>
- </div><button class="btn primary" style="margin-top:14px" onclick="start()">Start Quiz</button></div>
- <div class="card"><b>Offline-first</b><p class="muted">Quiz progress is saved automatically on this device. No internet is needed for the quiz.</p>
- <p>3,320 source vocabulary → 35 Days × 100 slots.</p><p>Day 1–33: 100 each · Day 34: 20 · Day 35: reserved.</p></div>`;
+ </div><button class="btn primary" id="startBtn" style="margin-top:14px">Start Quiz</button></div>
+ <div class="card"><b>Progress tersimpan otomatis</b><p class="muted">Sesi yang sedang berjalan dapat disimpan dan dilanjutkan lagi di perangkat ini.</p><p>3.320 kosakata · Day 1–33: 100 · Day 34: 20 · Day 35: cadangan.</p></div>`;
+ $('startBtn').addEventListener('click',start);
+ if(active){$('resumeBtn').addEventListener('click',()=>{currentSession=state.active;quiz();});$('discardBtn').addEventListener('click',()=>{if(confirm('Hapus sesi quiz yang tersimpan?')){delete state.active;save();home();}})}
 }
 function start(){
- const d=+day.value, pool=shuffle(dayData(d)); if(!pool.length){alert("This Day has no vocabulary yet.");return}
- const n=Math.min(+num.value,pool.length);
- currentSession={id:Date.now(),day:d,mode:mode.value,timer:+timer.value,items:pool.slice(0,n),i:0,score:0,left:+timer.value,answers:[]};
- saveSession(); quiz();
+ const d=Number($('day').value),pool=shuffle(dayData(d));if(!pool.length){alert('Day ini belum memiliki kosakata.');return;}
+ const n=Math.min(Number($('num').value),pool.length);currentSession={id:Date.now(),day:d,mode:$('mode').value,timer:Number($('timer').value),items:pool.slice(0,n),i:0,score:0,left:Number($('timer').value),answers:[]};state.active=currentSession;save();quiz();
 }
-function saveSession(){state.active=currentSession;save()}
 function quiz(){
- const s=currentSession;if(!s){home();return}
- if(s.i>=s.items.length){finish();return}
+ if(!currentSession){home();return}const s=currentSession;if(s.i>=s.items.length){finish();return}
  const q=s.items[s.i];let m=s.mode;if(m==='mix')m=shuffle(['kr','rk','km'])[0];
- let prompt=m==='rk'?q.reading:q.kanji;
- let correct=m==='kr'?q.reading:m==='rk'?q.kanji:q.meaning;
- let vals=all().filter(x=>x.day===s.day).map(x=>m==='kr'?x.reading:m==='rk'?x.kanji:x.meaning);
- let opts=options(correct,vals);
- app.innerHTML=`<div class="card"><div class="row between"><span class="pill">Day ${s.day} · ${s.i+1}/${s.items.length}</span><span class="pill">⏱ <b id="clock">${s.left}</b>s</span></div>
- <div class="bar"><div style="width:${s.i/s.items.length*100}%"></div></div>
- <div class="big">${esc(prompt)}</div><div class="sub muted">${m==='kr'?'Choose the reading':m==='rk'?'Choose the Kanji':'Choose the meaning'}</div>
- <div class="answers">${opts.map((o,j)=>`<button class="ans" onclick="answer(${JSON.stringify(o).replace(/</g,'\\u003c')},${JSON.stringify(correct).replace(/</g,'\\u003c')})">${esc(o)}</button>`).join('')}</div>
- <button class="btn" style="margin-top:14px" onclick="quitQuiz()">Save & Exit</button></div>`;
- clearInterval(window.timerID);window.timerID=setInterval(()=>{if(!currentSession)return;currentSession.left--;document.getElementById("clock").textContent=currentSession.left;if(currentSession.left<=0){answer(null,correct)}},1000);
+ const prompt=m==='rk'?q.reading:q.kanji;const correct=m==='kr'?q.reading:m==='rk'?q.kanji:q.meaning;
+ const vals=dayData(s.day).map(x=>m==='kr'?x.reading:m==='rk'?x.kanji:x.meaning);const opts=options(correct,vals);const saved=!!state.savedCards[q.id];
+ $('app').innerHTML=`<div class="card"><div class="row between"><span class="pill">Day ${s.day} · ${s.i+1}/${s.items.length}</span><span class="pill">⏱ <b id="clock">${s.left}</b>s</span></div>
+ <div class="bar"><div style="width:${(s.i/s.items.length)*100}%"></div></div><div class="big">${esc(prompt)}</div><div class="sub muted">${m==='kr'?'Pilih bacaan':m==='rk'?'Pilih Kanji':'Pilih arti'}</div>
+ <div class="answers" id="answers">${opts.map((o,j)=>`<button class="ans" data-answer="${esc(o)}">${esc(o)}</button>`).join('')}</div>
+ <div id="feedback" class="feedback"></div><div class="row between" style="margin-top:14px"><button class="btn" id="saveQuiz">💾 Simpan Progress</button><button class="btn ${saved?'saved':''}" id="saveCard">${saved?'★ Tersimpan':'☆ Simpan Kartu'}</button><button class="btn danger" id="exitQuiz">Keluar</button></div></div>`;
+ $('answers').addEventListener('click',e=>{const b=e.target.closest('[data-answer]');if(b)answer(b.dataset.answer,correct);});
+ $('saveQuiz').addEventListener('click',()=>{state.active=currentSession;save();notice('Progress quiz sudah disimpan di perangkat ini.');});
+ $('saveCard').addEventListener('click',()=>toggleSaved(q));$('exitQuiz').addEventListener('click',quitQuiz);
+ clearInterval(quizTimer);quizTimer=setInterval(()=>{if(!currentSession)return;currentSession.left--;const c=$('clock');if(c)c.textContent=currentSession.left;if(currentSession.left<=0)answer(null,correct);},1000);
 }
-function answer(value,correct){
- clearInterval(window.timerID); if(!currentSession)return;
- const ok=value===correct;currentSession.score+=ok?1:0;currentSession.answers.push(ok);currentSession.i++;currentSession.left=currentSession.timer;saveSession();quiz();
-}
-function finish(){
- const s=currentSession;state.completed[s.id]={day:s.day,score:s.score,total:s.items.length,date:new Date().toISOString()};delete state.active;save();currentSession=null;
- app.innerHTML=`<div class="card"><h2>Quiz Complete</h2><div class="big">${state.completed[Object.keys(state.completed).pop()].score}/${s.items.length}</div><p class="sub">Day ${s.day}</p><button class="btn primary" onclick="home()">Back to Quiz</button></div>`;
-}
-function quitQuiz(){clearInterval(window.timerID);saveSession();currentSession=null;home();notice("Progress saved on this device.");}
-function notice(t){const n=document.createElement("div");n.className="notice";n.textContent=t;app.prepend(n)}
+function answer(value,correct){clearInterval(quizTimer);if(!currentSession)return;const ok=value===correct;currentSession.score+=ok?1:0;currentSession.answers.push(ok);const buttons=[...document.querySelectorAll('.ans')];buttons.forEach(b=>{b.disabled=true;if(b.dataset.answer===correct)b.classList.add('correct');else if(b.dataset.answer===value)b.classList.add('wrong');});const f=$('feedback');if(f)f.textContent=value===null?'Waktu habis ⏱':(ok?'Benar ✓':'Kurang tepat ✗');state.active=currentSession;save();setTimeout(()=>{if(!currentSession)return;currentSession.i++;currentSession.left=currentSession.timer;save();quiz();},650);}
+function finish(){clearInterval(quizTimer);const s=currentSession;state.completed[s.id]={day:s.day,score:s.score,total:s.items.length,date:new Date().toISOString()};delete state.active;save();currentSession=null;$('app').innerHTML=`<div class="card"><h2>Quiz Selesai 🎉</h2><div class="big">${s.score}/${s.items.length}</div><p class="sub">Day ${s.day}</p><div class="row" style="justify-content:center"><button class="btn primary" id="again">Kembali ke Quiz</button><button class="btn" id="flashSaved">Kartu Tersimpan</button></div></div>`;$('again').addEventListener('click',home);$('flashSaved').addEventListener('click',savedCards);}
+function quitQuiz(){clearInterval(quizTimer);if(currentSession){state.active=currentSession;save();}currentSession=null;home();notice('Progress tersimpan. Kamu bisa melanjutkannya dari menu Quiz.');}
+function notice(t){const n=document.createElement('div');n.className='notice';n.textContent=t;$('app').prepend(n);setTimeout(()=>n.remove(),2500);}
+function toggleSaved(q){const k=String(q.id);if(state.savedCards[k])delete state.savedCards[k];else state.savedCards[k]=true;save();if(currentSession)quiz();else flash();}
+function savedCards(){flashDay='saved';flashIndex=0;flashFlipped=false;flash();}
 function flash(){
- const days=[...Array(35)].map((_,i)=>i+1), rows=dayData(flashDay); if(flashIndex>=rows.length)flashIndex=0;
- const q=rows[flashIndex];
- app.innerHTML=`<div class="card"><h2>Flashcards</h2><div class="grid"><div><label class="label">Day</label><select class="field" onchange="flashDay=+this.value;flashIndex=0;flashBack=false;flash()">${days.map(d=>`<option ${d===flashDay?'selected':''}>${d}</option>`).join('')}</select></div></div></div>
- ${q?`<div class="card"><div class="flash" onclick="flashBack=!flashBack;flash()">${flashBack?`<div><div class="sub">${esc(q.reading)}</div><div class="sub">${esc(q.meaning)}</div><div class="muted">tap to flip</div></div>`:`<div><div class="big">${esc(q.kanji)}</div><div class="muted">tap to flip</div></div>`}</div>
- <div class="row between" style="margin-top:12px"><button class="btn" onclick="flashIndex=Math.max(0,flashIndex-1);flashBack=false;flash()">← Prev</button><span>${flashIndex+1}/${rows.length}</span><button class="btn" onclick="flashIndex=Math.min(rows.length-1,flashIndex+1);flashBack=false;flash()">Next →</button></div></div>`:'<div class="card">No vocabulary in this Day yet.</div>'}`;
+ const days=[...Array(35)].map((_,i)=>i+1);let rows=flashDay==='saved'?all().filter(q=>state.savedCards[String(q.id)]):dayData(flashDay);if(!rows.length){$('app').innerHTML=`<div class="card empty"><h2>${flashDay==='saved'?'Belum ada kartu tersimpan':'Tidak ada kosakata'}</h2><button class="btn" id="backFlash">Kembali</button></div>`;$('backFlash').addEventListener('click',()=>{flashDay=1;flashIndex=0;flash();});return;}if(flashIndex>=rows.length)flashIndex=rows.length-1;const q=rows[flashIndex];
+ $('app').innerHTML=`<div class="card"><h2>Flashcards</h2><div class="grid"><div><label class="label">Day</label><select id="flashDay" class="field"><option value="saved">★ Kartu Tersimpan</option>${days.map(d=>`<option value="${d}" ${d===flashDay?'selected':''}>Day ${d}</option>`).join('')}</select></div></div></div>
+ <div class="card"><div class="flash-wrap"><div class="flash ${flashFlipped?'flipped':''}" id="flashCard"><div class="flash-face flash-front"><div><div class="big">${esc(q.kanji)}</div><div class="muted">Tap kartu untuk membalik</div></div></div><div class="flash-face flash-back"><div><div class="sub">${esc(q.reading)}</div><div class="sub">${esc(q.meaning)}</div><div class="muted">Tap kartu untuk kembali</div></div></div></div></div>
+ <div class="flash-nav"><button class="btn" id="prev">← Back</button><span>${flashIndex+1}/${rows.length}</span><button class="btn" id="next">Next →</button></div>
+ <div class="row" style="justify-content:center;margin-top:12px"><button class="btn ${state.savedCards[String(q.id)]?'saved':''}" id="saveFlash">${state.savedCards[String(q.id)]?'★ Tersimpan':'☆ Simpan Kartu'}</button></div></div>`;
+ $('flashDay').addEventListener('change',e=>{flashDay=e.target.value==='saved'?'saved':Number(e.target.value);flashIndex=0;flashFlipped=false;flash();});$('flashCard').addEventListener('click',()=>{flashFlipped=!flashFlipped;const c=$('flashCard');c.classList.toggle('flipped',flashFlipped);});$('prev').addEventListener('click',()=>{flashIndex=(flashIndex-1+rows.length)%rows.length;flashFlipped=false;flash();});$('next').addEventListener('click',()=>{flashIndex=(flashIndex+1)%rows.length;flashFlipped=false;flash();});$('saveFlash').addEventListener('click',()=>toggleSaved(q));
 }
-function list(){
- const d=listDay, rows=dayData(d);
- app.innerHTML=`<div class="card"><h2>Search & Kanji List</h2><div class="grid"><div><label class="label">Day</label><select class="field" onchange="listDay=+this.value;list()">${[...Array(35)].map((_,i)=>`<option ${i+1===d?'selected':''}>${i+1}</option>`).join('')}</select></div><div><label class="label">Search</label><input id="search" class="field" placeholder="Kanji / reading / meaning" oninput="renderTable()"></div></div></div><div class="card"><div id="table"></div></div>`;renderTable()
-}
-function renderTable(){const q=(document.getElementById("search")?.value||"").toLowerCase();const rows=dayData(listDay).filter(x=>(x.kanji+x.reading+x.meaning).toLowerCase().includes(q));table.innerHTML=`<div class="tablewrap"><table class="table"><tr><th>No.</th><th>Kanji</th><th>Reading</th><th>Meaning</th></tr>${rows.map(x=>`<tr><td>${x.no}</td><td>${esc(x.kanji)}</td><td>${esc(x.reading)}</td><td>${esc(x.meaning)}</td></tr>`).join('')}</table></div>`}
-function manage(){
- app.innerHTML=`<div class="card"><h2>Database Management</h2><p>Total built-in vocabulary: <b>${DATA.length}</b></p><p>Custom entries: <b>${state.custom.length}</b></p>
- <p class="muted">This standalone version stores imported data locally. For the simplest reliable mobile workflow, Excel import is provided through CSV below. You can export an Excel sheet as CSV and import it here.</p>
- <input id="file" type="file" accept=".csv,.txt" class="field"><button class="btn primary" style="margin-top:10px" onclick="importCSV()">Import CSV</button>
- <button class="btn danger" style="margin-top:10px" onclick="clearCustom()">Delete imported data</button>
- <hr><h3>Progress</h3><p>${Object.keys(state.completed).length} completed quizzes saved locally.</p><button class="btn" onclick="clearProgress()">Clear quiz progress</button></div>`;
-}
-function importCSV(){
- const f=file.files[0];if(!f)return alert("Select a CSV file.");
- const r=new FileReader();r.onload=()=>{const lines=String(r.result).split(/\r?\n/).filter(Boolean);let added=0;for(let line of lines.slice(1)){let p=line.split(",").map(x=>x.trim().replace(/^"|"$/g,''));if(p.length>=3){let idx=DATA.length+state.custom.length;state.custom.push({id:"custom-"+Date.now()+"-"+added,day:Math.floor(idx/100)+1,no:idx%100+1,kanji:p[0],reading:p[1],meaning:p.slice(2).join(",")});added++}}save();alert(added+" entries imported.");manage()};r.readAsText(f)
-}
-function clearCustom(){if(confirm("Delete all imported entries?")){state.custom=[];save();manage()}}
-function clearProgress(){if(confirm("Clear saved quiz progress?")){state.completed={};delete state.active;save();manage()}}
-if(state.active){currentSession=state.active;quiz()}else home();
+function list(){const d=listDay;$('app').innerHTML=`<div class="card"><h2>Search & Kanji List</h2><div class="grid"><div><label class="label">Day</label><select id="listDay" class="field">${[...Array(35)].map((_,i)=>`<option ${i+1===d?'selected':''}>${i+1}</option>`).join('')}</select></div><div><label class="label">Search</label><input id="search" class="field" placeholder="Kanji / reading / meaning"></div></div></div><div class="card"><div id="table"></div></div>`;$('listDay').addEventListener('change',e=>{listDay=Number(e.target.value);list();});$('search').addEventListener('input',renderTable);renderTable();}
+function renderTable(){const q=($('search')?.value||'').toLowerCase();const rows=dayData(listDay).filter(x=>(x.kanji+x.reading+x.meaning).toLowerCase().includes(q));$('table').innerHTML=`<div class="tablewrap"><table class="table"><tr><th>No.</th><th>Kanji</th><th>Reading</th><th>Meaning</th></tr>${rows.map(x=>`<tr><td>${x.no}</td><td>${esc(x.kanji)}</td><td>${esc(x.reading)}</td><td>${esc(x.meaning)}</td></tr>`).join('')}</table></div>`;}
+function manage(){$('app').innerHTML=`<div class="card"><h2>Database & Progress</h2><p>Total built-in: <b>${DATA.length}</b></p><p>Custom: <b>${state.custom.length}</b></p><p>Quiz selesai: <b>${Object.keys(state.completed).length}</b></p><p>Kartu tersimpan: <b>${Object.keys(state.savedCards).length}</b></p><input id="file" type="file" accept=".csv,.txt" class="field"><button class="btn primary" id="import" style="margin-top:10px">Import CSV</button><button class="btn danger" id="clearCustom" style="margin-top:10px">Hapus data import</button><hr><button class="btn" id="clearProgress">Hapus progress quiz</button><button class="btn" id="clearSaved">Hapus semua kartu tersimpan</button></div>`;$('import').addEventListener('click',importCSV);$('clearCustom').addEventListener('click',()=>{if(confirm('Hapus semua data import?')){state.custom=[];save();manage();}});$('clearProgress').addEventListener('click',()=>{if(confirm('Hapus semua progress quiz?')){state.completed={};delete state.active;save();manage();}});$('clearSaved').addEventListener('click',()=>{if(confirm('Hapus semua kartu tersimpan?')){state.savedCards={};save();manage();}});}
+function importCSV(){const f=$('file').files[0];if(!f)return alert('Pilih file CSV.');const r=new FileReader();r.onload=()=>{const lines=String(r.result).split(/\r?\n/).filter(Boolean);let added=0;for(const line of lines.slice(1)){const p=line.split(',').map(x=>x.trim().replace(/^"|"$/g,''));if(p.length>=3){const idx=DATA.length+state.custom.length;state.custom.push({id:'custom-'+Date.now()+'-'+added,day:Math.floor(idx/100)+1,no:idx%100+1,kanji:p[0],reading:p[1],meaning:p.slice(2).join(',')});added++;}}save();alert(added+' entries imported.');setCount();manage();};r.readAsText(f);}
+setCount();home();
+if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+})();
 </script>
-</main></body></html>
+</body></html>
