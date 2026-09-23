@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111827">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest">
+<title>Kanji Quiz N2</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f4f7fb;color:#111827;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+header{background:#111827;color:#fff;padding:14px 16px;position:sticky;top:0;z-index:5}.head{max-width:900px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:10px}.brand{font-weight:800;font-size:20px}
+main{max-width:900px;margin:auto;padding:14px 12px 60px}.nav{display:flex;gap:7px;overflow:auto;padding:8px 0}.btn{border:1px solid #cbd5e1;background:#fff;border-radius:10px;padding:10px 13px;cursor:pointer}.btn.primary{background:#111827;color:#fff;border-color:#111827}.btn.danger{color:#b91c1c}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:16px;margin:10px 0;box-shadow:0 4px 16px #0f172a0a}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}.label{display:block;font-weight:700;font-size:13px;margin-bottom:5px}.field{width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:9px;background:#fff}.muted{color:#64748b}.big{font-size:64px;font-weight:800;text-align:center;margin:25px 0 5px}.sub{text-align:center;font-size:21px;margin:5px}.answers{display:grid;gap:9px;margin-top:18px}.ans{padding:14px;border:1px solid #cbd5e1;background:#fff;border-radius:11px;text-align:left;font-size:16px}.ans:active{transform:scale(.99)}.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.between{justify-content:space-between}.bar{height:8px;background:#e2e8f0;border-radius:99px;overflow:hidden;margin:10px 0}.bar div{height:100%;background:#111827}.pill{background:#e2e8f0;border-radius:99px;padding:4px 8px;font-size:12px}.flash{min-height:230px;display:flex;align-items:center;justify-content:center;text-align:center;border:1px solid #cbd5e1;border-radius:16px;cursor:pointer}.flash .big{margin:0}.tablewrap{overflow:auto}.table{width:100%;border-collapse:collapse}.table td,.table th{padding:9px;border-bottom:1px solid #e2e8f0;text-align:left;white-space:nowrap}.hidden{display:none}.notice{padding:10px;border-radius:9px;background:#eff6ff;color:#1e40af;margin:8px 0}.stats{font-size:13px}
+@media(max-width:600px){.big{font-size:52px}.head{align-items:flex-start}.btn{padding:9px 11px}}
+</style>
+</head>
+<body>
+<header><div class="head"><div class="brand">漢字 Quiz N2</div><div id="count" class="stats"></div></div></header>
+<main>
+<div id="nav" class="nav">
+<button class="btn" onclick="show('home')">Quiz</button><button class="btn" onclick="show('flash')">Flashcards</button><button class="btn" onclick="show('list')">Search/List</button><button class="btn" onclick="show('manage')">Database</button>
+</div>
+<div id="app"></div>
+</main>
+<script src="data.js"></script>
+<script>
+const DATA=window.KANJI_DATA||[];
+const STORE="kanjiQuizN2_v1";
+let state=JSON.parse(localStorage.getItem(STORE)||'{}');
+state.completed=state.completed||{}; state.sessions=state.sessions||{}; state.custom=state.custom||[];
+let currentSession=null, flashIndex=0, flashDay=1, flashBack=false, listDay=1;
+
+function save(){localStorage.setItem(STORE,JSON.stringify(state))}
+function all(){return DATA.concat(state.custom)}
+function dayData(d){return all().filter(x=>x.day===d)}
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+function options(correct,vals){return shuffle([correct,...shuffle([...new Set(vals.filter(v=>v&&v!==correct))]).slice(0,3)])}
+function show(view){
+ if(view==='home') home(); if(view==='flash') flash(); if(view==='list') list(); if(view==='manage') manage();
+}
+function home(){
+ const days=[...Array(35)].map((_,i)=>i+1);
+ document.getElementById("count").textContent=all().length+" vocab";
+ app.innerHTML=`<div class="card"><h2>Start Quiz</h2><div class="grid">
+ <div><label class="label">Day / Lesson</label><select id="day" class="field">${days.map(d=>`<option value="${d}">Day ${d} (${dayData(d).length}/100)</option>`).join('')}</select></div>
+ <div><label class="label">Mode</label><select id="mode" class="field"><option value="kr">Kanji → Reading</option><option value="rk">Reading → Kanji</option><option value="km">Kanji → Meaning</option><option value="mix">Mixed</option></select></div>
+ <div><label class="label">Questions</label><select id="num" class="field">${[5,10,20,30,50,100].map(n=>`<option>${n}</option>`).join('')}</select></div>
+ <div><label class="label">Timer / question</label><select id="timer" class="field">${[5,10,15,20,30,45,60].map(n=>`<option ${n===20?'selected':''}>${n}</option>`).join('')}</select></div>
+ </div><button class="btn primary" style="margin-top:14px" onclick="start()">Start Quiz</button></div>
+ <div class="card"><b>Offline-first</b><p class="muted">Quiz progress is saved automatically on this device. No internet is needed for the quiz.</p>
+ <p>3,320 source vocabulary → 35 Days × 100 slots.</p><p>Day 1–33: 100 each · Day 34: 20 · Day 35: reserved.</p></div>`;
+}
+function start(){
+ const d=+day.value, pool=shuffle(dayData(d)); if(!pool.length){alert("This Day has no vocabulary yet.");return}
+ const n=Math.min(+num.value,pool.length);
+ currentSession={id:Date.now(),day:d,mode:mode.value,timer:+timer.value,items:pool.slice(0,n),i:0,score:0,left:+timer.value,answers:[]};
+ saveSession(); quiz();
+}
+function saveSession(){state.active=currentSession;save()}
+function quiz(){
+ const s=currentSession;if(!s){home();return}
+ if(s.i>=s.items.length){finish();return}
+ const q=s.items[s.i];let m=s.mode;if(m==='mix')m=shuffle(['kr','rk','km'])[0];
+ let prompt=m==='rk'?q.reading:q.kanji;
+ let correct=m==='kr'?q.reading:m==='rk'?q.kanji:q.meaning;
+ let vals=all().filter(x=>x.day===s.day).map(x=>m==='kr'?x.reading:m==='rk'?x.kanji:x.meaning);
+ let opts=options(correct,vals);
+ app.innerHTML=`<div class="card"><div class="row between"><span class="pill">Day ${s.day} · ${s.i+1}/${s.items.length}</span><span class="pill">⏱ <b id="clock">${s.left}</b>s</span></div>
+ <div class="bar"><div style="width:${s.i/s.items.length*100}%"></div></div>
+ <div class="big">${esc(prompt)}</div><div class="sub muted">${m==='kr'?'Choose the reading':m==='rk'?'Choose the Kanji':'Choose the meaning'}</div>
+ <div class="answers">${opts.map((o,j)=>`<button class="ans" onclick="answer(${JSON.stringify(o).replace(/</g,'\\u003c')},${JSON.stringify(correct).replace(/</g,'\\u003c')})">${esc(o)}</button>`).join('')}</div>
+ <button class="btn" style="margin-top:14px" onclick="quitQuiz()">Save & Exit</button></div>`;
+ clearInterval(window.timerID);window.timerID=setInterval(()=>{if(!currentSession)return;currentSession.left--;document.getElementById("clock").textContent=currentSession.left;if(currentSession.left<=0){answer(null,correct)}},1000);
+}
+function answer(value,correct){
+ clearInterval(window.timerID); if(!currentSession)return;
+ const ok=value===correct;currentSession.score+=ok?1:0;currentSession.answers.push(ok);currentSession.i++;currentSession.left=currentSession.timer;saveSession();quiz();
+}
+function finish(){
+ const s=currentSession;state.completed[s.id]={day:s.day,score:s.score,total:s.items.length,date:new Date().toISOString()};delete state.active;save();currentSession=null;
+ app.innerHTML=`<div class="card"><h2>Quiz Complete</h2><div class="big">${state.completed[Object.keys(state.completed).pop()].score}/${s.items.length}</div><p class="sub">Day ${s.day}</p><button class="btn primary" onclick="home()">Back to Quiz</button></div>`;
+}
+function quitQuiz(){clearInterval(window.timerID);saveSession();currentSession=null;home();notice("Progress saved on this device.");}
+function notice(t){const n=document.createElement("div");n.className="notice";n.textContent=t;app.prepend(n)}
+function flash(){
+ const days=[...Array(35)].map((_,i)=>i+1), rows=dayData(flashDay); if(flashIndex>=rows.length)flashIndex=0;
+ const q=rows[flashIndex];
+ app.innerHTML=`<div class="card"><h2>Flashcards</h2><div class="grid"><div><label class="label">Day</label><select class="field" onchange="flashDay=+this.value;flashIndex=0;flashBack=false;flash()">${days.map(d=>`<option ${d===flashDay?'selected':''}>${d}</option>`).join('')}</select></div></div></div>
+ ${q?`<div class="card"><div class="flash" onclick="flashBack=!flashBack;flash()">${flashBack?`<div><div class="sub">${esc(q.reading)}</div><div class="sub">${esc(q.meaning)}</div><div class="muted">tap to flip</div></div>`:`<div><div class="big">${esc(q.kanji)}</div><div class="muted">tap to flip</div></div>`}</div>
+ <div class="row between" style="margin-top:12px"><button class="btn" onclick="flashIndex=Math.max(0,flashIndex-1);flashBack=false;flash()">← Prev</button><span>${flashIndex+1}/${rows.length}</span><button class="btn" onclick="flashIndex=Math.min(rows.length-1,flashIndex+1);flashBack=false;flash()">Next →</button></div></div>`:'<div class="card">No vocabulary in this Day yet.</div>'}`;
+}
+function list(){
+ const d=listDay, rows=dayData(d);
+ app.innerHTML=`<div class="card"><h2>Search & Kanji List</h2><div class="grid"><div><label class="label">Day</label><select class="field" onchange="listDay=+this.value;list()">${[...Array(35)].map((_,i)=>`<option ${i+1===d?'selected':''}>${i+1}</option>`).join('')}</select></div><div><label class="label">Search</label><input id="search" class="field" placeholder="Kanji / reading / meaning" oninput="renderTable()"></div></div></div><div class="card"><div id="table"></div></div>`;renderTable()
+}
+function renderTable(){const q=(document.getElementById("search")?.value||"").toLowerCase();const rows=dayData(listDay).filter(x=>(x.kanji+x.reading+x.meaning).toLowerCase().includes(q));table.innerHTML=`<div class="tablewrap"><table class="table"><tr><th>No.</th><th>Kanji</th><th>Reading</th><th>Meaning</th></tr>${rows.map(x=>`<tr><td>${x.no}</td><td>${esc(x.kanji)}</td><td>${esc(x.reading)}</td><td>${esc(x.meaning)}</td></tr>`).join('')}</table></div>`}
+function manage(){
+ app.innerHTML=`<div class="card"><h2>Database Management</h2><p>Total built-in vocabulary: <b>${DATA.length}</b></p><p>Custom entries: <b>${state.custom.length}</b></p>
+ <p class="muted">This standalone version stores imported data locally. For the simplest reliable mobile workflow, Excel import is provided through CSV below. You can export an Excel sheet as CSV and import it here.</p>
+ <input id="file" type="file" accept=".csv,.txt" class="field"><button class="btn primary" style="margin-top:10px" onclick="importCSV()">Import CSV</button>
+ <button class="btn danger" style="margin-top:10px" onclick="clearCustom()">Delete imported data</button>
+ <hr><h3>Progress</h3><p>${Object.keys(state.completed).length} completed quizzes saved locally.</p><button class="btn" onclick="clearProgress()">Clear quiz progress</button></div>`;
+}
+function importCSV(){
+ const f=file.files[0];if(!f)return alert("Select a CSV file.");
+ const r=new FileReader();r.onload=()=>{const lines=String(r.result).split(/\r?\n/).filter(Boolean);let added=0;for(let line of lines.slice(1)){let p=line.split(",").map(x=>x.trim().replace(/^"|"$/g,''));if(p.length>=3){let idx=DATA.length+state.custom.length;state.custom.push({id:"custom-"+Date.now()+"-"+added,day:Math.floor(idx/100)+1,no:idx%100+1,kanji:p[0],reading:p[1],meaning:p.slice(2).join(",")});added++}}save();alert(added+" entries imported.");manage()};r.readAsText(f)
+}
+function clearCustom(){if(confirm("Delete all imported entries?")){state.custom=[];save();manage()}}
+function clearProgress(){if(confirm("Clear saved quiz progress?")){state.completed={};delete state.active;save();manage()}}
+if(state.active){currentSession=state.active;quiz()}else home();
+</script>
+</main></body></html>

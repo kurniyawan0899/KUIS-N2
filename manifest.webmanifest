@@ -1,0 +1,9 @@
+{
+  "name": "Kanji Quiz N2",
+  "short_name": "Kanji Quiz",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f4f7fb",
+  "theme_color": "#111827",
+  "description": "Offline Kanji N2 quiz and flashcards"
+}
