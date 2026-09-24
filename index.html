@@ -235,16 +235,37 @@ function finish(){
 
         ${
           hasNext
-        <button type="button" class="primary" id="nextBtn">
-  Next →
-</button>
+          ? `<button class="primary" id="nextBtn">
+              Next →
+            </button>`
+          : `<button class="primary" id="nextBtn">
+              完了
+            </button>`
         }
 
-        <button class="secondary" onclick="quizMenu()">
+        <button class="secondary" id="menuBtn">
           クイズメニューへ
         </button>
       </div>
     </div>
+  `;
+
+  const nextBtn=$('nextBtn');
+  if(nextBtn){
+    nextBtn.addEventListener('click',()=>{
+      if(hasNext){
+        nextBatch(s.day,s.mode,s.timer,s.batchSize);
+      }else{
+        quizMenu();
+      }
+    });
+  }
+
+  const menuBtn=$('menuBtn');
+  if(menuBtn){
+    menuBtn.addEventListener('click',quizMenu);
+  }
+}
   `;
 }function nextBatch(day,mode,timer,batchSize){
   const pool=dayData(day);
