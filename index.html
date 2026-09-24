@@ -1,337 +1,41 @@
 <!doctype html>
 <html lang="id">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#111827">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<link rel="manifest" href="manifest.webmanifest">
-<title>Kanji Quiz N2</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#fff8f4"><meta name="description" content="KUIS N2 — latihan kosakata JLPT N2 selama 35 hari">
+<link rel="manifest" href="manifest.webmanifest"><title>KUIS N2</title>
 <style>
-:root{--navy:#173b72;--blue:#4f78c9;--blue2:#dce8ff;--ink:#17305f;--muted:#66758f;--bg:#f8f8f5;--white:#fff;--line:#e3e8f1;--shadow:0 12px 35px rgba(23,59,114,.10);--radius:24px}
-*{box-sizing:border-box}html{background:var(--bg)}body{margin:0;background:linear-gradient(180deg,#fbfbf8 0%,#f6f8fb 100%);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",system-ui,sans-serif;-webkit-font-smoothing:antialiased}button,select,input{font:inherit}button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}.top{padding:18px 18px 8px;background:rgba(251,251,248,.94);backdrop-filter:blur(16px);position:sticky;top:0;z-index:20}.head{max-width:920px;margin:auto;display:flex;align-items:center;justify-content:space-between}.brandbox{display:flex;align-items:center;gap:12px}.fuji{font-size:38px;line-height:1}.brand{font-size:27px;letter-spacing:.4px;font-weight:850;color:var(--navy)}.brandjp{font-size:13px;color:#6c7890;margin-top:1px}.gear{width:44px;height:44px;border:0;background:#fff;border-radius:50%;font-size:24px;color:var(--navy);box-shadow:0 5px 18px rgba(23,59,114,.08)}main{max-width:920px;margin:auto;padding:10px 16px 105px}.nav{display:none}.hero{position:relative;min-height:195px;padding:22px 12px 8px;overflow:hidden}.hero h1{font-size:31px;line-height:1.25;margin:12px 0 10px;font-weight:850;color:var(--navy)}.hero p{font-size:16px;line-height:1.6;color:#66758f;margin:0;max-width:320px}.hero-art{position:absolute;right:-8px;top:5px;font-size:108px;opacity:.9;filter:saturate(.9)}.hero-art:after{content:'🌸';font-size:46px;position:absolute;right:-4px;top:75px}.progress-card{position:relative;overflow:hidden;background:linear-gradient(135deg,#547cc8,#365da9);color:#fff;border-radius:26px;padding:23px 20px;box-shadow:0 15px 35px rgba(55,91,164,.22);display:grid;grid-template-columns:150px 1fr;gap:22px;align-items:center}.progress-card:after{content:'青海波';position:absolute;right:-10px;bottom:-22px;font-size:74px;opacity:.07;font-weight:900}.ring{width:132px;height:132px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(#fff 0 120deg,rgba(255,255,255,.22) 120deg 360deg);position:relative;margin:auto}.ring:before{content:'';position:absolute;inset:10px;border-radius:50%;background:#5277c2}.ring-inner{position:relative;text-align:center;color:#fff}.ring-inner small{display:block;font-size:15px;font-weight:700;opacity:.9}.ring-inner strong{display:block;font-size:29px;line-height:1.1}.progress-title{font-weight:750;font-size:15px;opacity:.95}.progress-big{font-size:30px;font-weight:850;margin:7px 0}.whitebar{height:9px;background:rgba(255,255,255,.3);border-radius:99px;overflow:hidden}.whitebar i{display:block;height:100%;width:33%;background:#eaf1ff;border-radius:99px}.progress-meta{display:flex;gap:24px;margin-top:17px}.meta strong{display:block;font-size:20px}.meta span{font-size:12px;opacity:.85}.streak{background:#ffb33e;color:#fff;padding:6px 12px;border-radius:13px;font-weight:800;display:inline-block}.section-title{font-size:19px;margin:27px 4px 12px;font-weight:850}.action-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.action{min-height:190px;border-radius:24px;padding:20px;position:relative;border:1px solid rgba(255,255,255,.8);box-shadow:var(--shadow);overflow:hidden;cursor:pointer;text-align:left}.action:active{transform:scale(.985)}.action .icon{font-size:42px;margin-bottom:12px}.action h3{font-size:21px;margin:0 0 5px;color:var(--navy)}.action p{margin:0;color:#66758f;font-size:14px;line-height:1.5;max-width:190px}.action .arrow{position:absolute;right:16px;bottom:16px;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-size:22px;background:rgba(255,255,255,.65)}.a-blue{background:#eef4ff}.a-purple{background:#f8efff}.a-green{background:#eef8f3}.a-orange{background:#fff4e9}.quote{margin-top:16px;padding:17px 20px;border-radius:22px;background:#edf4ff;border:1px solid #dce8ff;display:flex;align-items:center;gap:15px}.quote-icon{font-size:35px}.quote b{font-size:17px}.quote small{display:block;color:#71809a;margin-top:3px}.bottom-nav{position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(255,255,255,.94);backdrop-filter:blur(18px);border-top:1px solid #e7ebf2;padding:8px max(12px,env(safe-area-inset-left)) calc(8px + env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(4,1fr);box-shadow:0 -8px 25px rgba(23,59,114,.06)}.bottom-nav button{border:0;background:none;color:#75829a;font-weight:700;font-size:11px;padding:4px 0}.bottom-nav button span{display:block;font-size:25px;line-height:28px;margin-bottom:2px}.bottom-nav button.active{color:#315bb5}.dot{width:5px;height:5px;border-radius:50%;background:#315bb5;margin:3px auto 0}.card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin:12px 0;box-shadow:var(--shadow)}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}.label{display:block;font-weight:750;font-size:13px;margin-bottom:6px}.field{width:100%;padding:12px;border:1px solid #d7deea;border-radius:14px;background:#fff;color:var(--ink)}.muted{color:var(--muted)}.big{font-size:64px;font-weight:850;text-align:center;margin:25px 0 5px}.sub{text-align:center;font-size:20px;margin:5px}.answers{display:grid;gap:10px;margin-top:18px}.ans{padding:16px;border:1px solid #d8dfeb;background:#fff;border-radius:15px;text-align:left;font-size:16px;cursor:pointer;touch-action:manipulation;color:var(--ink);box-shadow:0 4px 12px rgba(23,59,114,.05)}.ans.correct{border-color:#37a76f;background:#e9f8ef}.ans.wrong{border-color:#db6262;background:#fff0f0}.ans:disabled{cursor:default;opacity:1}.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.between{justify-content:space-between}.btn{border:1px solid #d5ddea;background:#fff;border-radius:14px;padding:11px 14px;cursor:pointer;color:var(--ink);font-weight:700}.btn:active{transform:scale(.98)}.btn.primary{background:var(--navy);color:#fff;border-color:var(--navy)}.btn.danger{color:#b83d3d}.bar{height:8px;background:#e8edf5;border-radius:99px;overflow:hidden;margin:10px 0}.bar div{height:100%;background:var(--blue)}.pill{background:#edf2fa;border-radius:99px;padding:5px 9px;font-size:12px}.tablewrap{overflow:auto}.table{width:100%;border-collapse:collapse}.table td,.table th{padding:9px;border-bottom:1px solid #e2e8f0;text-align:left;white-space:nowrap}.notice{padding:10px;border-radius:12px;background:#edf4ff;color:#24519d;margin:8px 0}.stats{font-size:13px}.feedback{text-align:center;font-weight:800;margin:12px 0}.saved{background:#fff4d8;border-color:#efb649}.resume{border-left:4px solid var(--blue)}.small{font-size:13px}.flash-wrap{perspective:1000px;margin:14px 0}.flash{min-height:280px;position:relative;transform-style:preserve-3d;transition:transform .5s ease;cursor:pointer;touch-action:manipulation}.flash.flipped{transform:rotateY(180deg)}.flash-face{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;border:1px solid #d7dfec;border-radius:24px;background:linear-gradient(145deg,#fff,#f5f8fd);backface-visibility:hidden;-webkit-backface-visibility:hidden;padding:20px;box-shadow:var(--shadow)}.flash-back{transform:rotateY(180deg);background:linear-gradient(145deg,#f5f0ff,#fff)}.flash-face .big{margin:0}.flash-nav{display:flex;justify-content:space-between;align-items:center;gap:8px}.star{font-size:24px;line-height:1;border:0;background:transparent;cursor:pointer}.empty{text-align:center;padding:25px}.hidden{display:none!important}@media(max-width:600px){main{padding-left:14px;padding-right:14px}.progress-card{grid-template-columns:112px 1fr;gap:12px;padding:17px}.ring{width:104px;height:104px}.ring:before{inset:8px}.ring-inner strong{font-size:23px}.progress-big{font-size:24px}.progress-meta{gap:12px}.hero h1{font-size:29px}.action{min-height:175px;padding:17px}.action .icon{font-size:36px}.action h3{font-size:19px}.big{font-size:52px}}
-</style>
-</head>
-<body>
-<header class="top"><div class="head"><div class="brandbox"><div class="fuji">🗻</div><div><div class="brand">KUIS N2</div><div class="brandjp">日本語・漢字・語彙</div></div></div><button class="gear" id="gearBtn" aria-label="Pengaturan">⚙️</button></div></header>
-<main>
-<div id="nav" class="nav">
-<button class="btn" data-view="home">Quiz</button><button class="btn" data-view="flash">Flashcards</button><button class="btn" data-view="list">Search/List</button><button class="btn" data-view="manage">Database</button>
-</div>
-<div id="app"></div>
-</main>
-<nav class="bottom-nav" id="bottomNav"><button data-view="home" class="active"><span>⌂</span>Home<div class="dot"></div></button><button data-view="quiz"><span>✎</span>Quiz</button><button data-view="list"><span>▣</span>単語</button><button data-view="manage"><span>▥</span>進捗</button></nav>
-<script src="data.js"></script>
-<script>
-(function(){
+:root{--bg:#fff8f4;--card:#fff;--ink:#26313d;--muted:#7b8792;--pink:#ef8fa8;--pink2:#f7c9d4;--blue:#8bb9d8;--blue2:#dcecf6;--green:#7db89a;--cream:#fff1dc;--line:#eee4df;--shadow:0 12px 30px rgba(76,54,55,.08);--radius:22px}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#fff8f4 0%,#f8fbfd 100%);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Noto Sans JP","Hiragino Kaku Gothic ProN",Meiryo,sans-serif;-webkit-tap-highlight-color:transparent}button{font:inherit}button:focus-visible{outline:3px solid #9fcbe5;outline-offset:2px}.app{max-width:560px;margin:auto;min-height:100dvh;padding-bottom:88px}.page{padding:18px 16px 24px}.hero{position:relative;overflow:hidden;background:linear-gradient(135deg,#fce5ea,#e7f3fa);border-radius:28px;padding:22px 20px 20px;box-shadow:var(--shadow);margin-bottom:16px}.hero:after{content:'🌸';position:absolute;right:18px;top:10px;font-size:54px;opacity:.55}.hero h1{margin:0;font-size:27px;letter-spacing:.04em}.hero p{margin:7px 0 0;color:#687583;font-size:13px}.fuji{margin:18px -20px -20px;height:60px;background:linear-gradient(180deg,transparent 0 10%,#a8c7d9 11% 55%,#8eb1c6 56%);clip-path:polygon(0 100%,28% 45%,43% 67%,61% 15%,76% 61%,100% 28%,100% 100%)}
+.greeting{font-size:14px;color:var(--muted);margin:6px 3px 12px}.progress-card,.card{background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}.progress-row{display:flex;justify-content:space-between;align-items:end}.progress-row strong{font-size:25px}.progress-row span{font-size:12px;color:var(--muted)}.bar{height:9px;background:#f0e8e5;border-radius:99px;overflow:hidden;margin-top:12px}.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--pink),var(--blue));border-radius:inherit;transition:width .3s}.actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}.action{border:1px solid var(--line);background:#fff;border-radius:20px;padding:17px;text-align:left;min-height:108px;box-shadow:var(--shadow);cursor:pointer}.action .ico{font-size:26px}.action b{display:block;margin-top:9px;font-size:15px}.action small{display:block;color:var(--muted);margin-top:3px}.quote{margin-top:14px;padding:16px 18px;border-radius:18px;background:var(--cream);font-weight:700;color:#6e5c48;text-align:center}.top{display:flex;align-items:center;gap:10px;margin-bottom:14px}.back,.iconbtn{width:40px;height:40px;border:1px solid var(--line);border-radius:13px;background:#fff;cursor:pointer}.top h2{margin:0;font-size:20px}.sub{font-size:12px;color:var(--muted);margin:-7px 0 14px 2px}.section-title{font-size:13px;font-weight:800;margin:18px 2px 9px;color:#5e6973}.day-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.day{border:1px solid var(--line);background:#fff;border-radius:14px;padding:11px 3px;cursor:pointer;text-align:center}.day b{display:block}.day small{color:var(--muted);font-size:9px}.mode-grid{display:grid;gap:9px}.choice{border:1px solid var(--line);background:#fff;border-radius:16px;padding:13px;text-align:left;cursor:pointer}.choice.active{border-color:var(--pink);background:#fff0f4}.startbtn,.primary{width:100%;border:0;border-radius:16px;padding:14px;background:var(--ink);color:#fff;font-weight:800;cursor:pointer}.secondary{width:100%;border:1px solid var(--line);border-radius:16px;padding:13px;background:#fff;cursor:pointer;font-weight:700}.quiz-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.pill{background:#fff;border:1px solid var(--line);border-radius:99px;padding:7px 10px;font-size:12px}.timer{font-variant-numeric:tabular-nums}.quiz-card{background:#fff;border:1px solid var(--line);border-radius:25px;box-shadow:var(--shadow);padding:24px 18px}.qmeta{text-align:center;color:var(--muted);font-size:12px}.prompt{text-align:center;font-size:42px;font-weight:800;margin:22px 5px;line-height:1.3;word-break:break-word}.prompt.meaning{font-size:24px}.answers{display:grid;gap:10px}.answer{border:1px solid #e7e1de;background:#fff;border-radius:16px;padding:14px;text-align:left;cursor:pointer;min-height:52px}.answer:active{transform:scale(.99)}.quiz-tools{display:flex;gap:9px;margin-top:12px}.quiz-tools button{flex:1}.result{margin-top:30px;text-align:center}.score{font-size:54px;font-weight:900}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:18px 0}.stat{background:#fff;border:1px solid var(--line);border-radius:16px;padding:12px}.stat b{font-size:20px;display:block}.stat small{color:var(--muted)}.list-search{width:100%;border:1px solid var(--line);background:#fff;border-radius:15px;padding:13px;margin-bottom:10px}.word{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:14px 2px;border-bottom:1px solid var(--line)}.word b{font-size:20px}.word small{display:block;color:var(--muted);margin-top:2px}.word .meaning{text-align:right;font-size:13px;max-width:45%}.flash-wrap{perspective:1000px}.flash-card{height:430px;position:relative;transform-style:preserve-3d;transition:transform .45s;cursor:pointer;touch-action:pan-y}.flash-card.flipped{transform:rotateY(180deg)}.flash-face{position:absolute;inset:0;backface-visibility:hidden;background:#fff;border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px;text-align:center}.flash-face.back{transform:rotateY(180deg)}.flash-kanji{font-size:78px;font-weight:900}.flash-reading{font-size:24px;margin-top:12px;color:#697580}.flash-meaning{font-size:25px;font-weight:800}.swipe-hint{text-align:center;color:var(--muted);font-size:12px;margin:11px 0}.flash-controls{display:flex;gap:10px}.flash-controls button{flex:1}.manage-grid{display:grid;gap:10px}.stat-card{padding:16px;background:#fff;border:1px solid var(--line);border-radius:18px}.stat-card strong{font-size:28px}.bottom{position:fixed;z-index:20;left:50%;transform:translateX(-50%);bottom:0;width:min(560px,100%);padding:8px 10px calc(8px + env(safe-area-inset-bottom));background:rgba(255,255,255,.94);backdrop-filter:blur(12px);border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr)}.nav{border:0;background:transparent;color:#87919a;padding:7px 2px;cursor:pointer;font-size:11px}.nav span{display:block;font-size:20px;line-height:20px}.nav.active{color:#d46f89;font-weight:800}.empty{padding:30px 10px;text-align:center;color:var(--muted)}.toast{position:fixed;left:50%;bottom:88px;transform:translateX(-50%);background:#26313d;color:#fff;padding:10px 14px;border-radius:12px;font-size:12px;z-index:30;opacity:0;pointer-events:none;transition:.2s}.toast.show{opacity:1}.saved{color:#d46f89}.danger{color:#b75b5b}
+@media(max-width:380px){.day-grid{grid-template-columns:repeat(4,1fr)}.flash-card{height:390px}.prompt{font-size:36px}}
+</style></head>
+<body><main id="app" class="app"></main><div id="toast" class="toast"></div>
+<script src="data.js"></script><script>
+(()=>{
 'use strict';
-const DATA=window.KANJI_DATA||[];
-const STORE='kanjiQuizN2_v2';
-const $=id=>document.getElementById(id);
-let state={completed:{},sessions:{},custom:[],savedCards:{},active:null,quizProgress:{}};
-try{state=Object.assign(state,JSON.parse(localStorage.getItem(STORE)||'{}'));}catch(e){}
-state.completed=state.completed||{};state.sessions=state.sessions||{};state.custom=state.custom||[];state.savedCards=state.savedCards||{};state.quizProgress=state.quizProgress||{};
-let currentSession=null,flashIndex=0,flashDay=1,flashFlipped=false,listDay=1,quizTimer=null;
-const all=()=>DATA.concat(state.custom);
-const dayData=d=>all().filter(x=>Number(x.day)===Number(d));
+const DATA=window.KANJI_DATA||[],STORE='kuisN2_clean_v1',APP=document.getElementById('app');
+const $=id=>document.getElementById(id), all=()=>DATA, dayData=d=>all().filter(x=>x.day===Number(d));
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const save=()=>localStorage.setItem(STORE,JSON.stringify(state));
-const shuffle=a=>[...a].sort(()=>Math.random()-.5);
-const options=(correct,vals)=>shuffle([correct,...shuffle([...new Set(vals.filter(v=>v&&v!==correct))]).slice(0,3)]);
-function setCount(){const el=$('count');if(el)el.textContent=all().length+' vocab';}
-function show(view){if(quizTimer)clearInterval(quizTimer);if(view==='home')home();else if(view==='quiz')quizMenu();else if(view==='flash')flash();else if(view==='list')list();else manage();}
-$('nav').addEventListener('click',e=>{const b=e.target.closest('[data-view]');if(b){currentSession=null;show(b.dataset.view);}});
-$('bottomNav').addEventListener('click',e=>{const b=e.target.closest('[data-view]');if(b){document.querySelectorAll('#bottomNav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');currentSession=null;show(b.dataset.view);}});
-$('gearBtn').addEventListener('click',()=>show('manage'));
-function home(){
- setCount();
- const done=Object.values(state.completed||{});const answered=done.reduce((n,x)=>n+Number(x.total||0),0);const pct=Math.min(100,Math.round((answered/3320)*100));
- const active=state.active;
- $('app').innerHTML=`<section class="hero"><div class="hero-art">🌸🗻</div><h1>今日も頑張りましょう 🌸</h1><p>コツコツの積み重ねが、<br>大きな力になります。</p></section>
- <section class="progress-card"><div class="ring" style="background:conic-gradient(#fff ${Math.max(18,pct*3.6)}deg,rgba(255,255,255,.22) ${Math.max(18,pct*3.6)}deg 360deg)"><div class="ring-inner"><small>Day</small><strong>${active?active.day:Math.min(35,Math.floor(answered/100)+1)} / 35</strong></div></div><div><div class="progress-title">▥ 学習の進捗</div><div class="progress-big">${answered.toLocaleString()} <small style="font-size:14px;font-weight:700">/ 3,320 語</small></div><div class="whitebar"><i style="width:${Math.max(2,pct)}%"></i></div><div style="font-size:12px;text-align:right;margin-top:4px;opacity:.85">${pct}%</div><div class="progress-meta"><div class="meta"><span>🎯 本日の目標</span><strong>100 語</strong></div><div class="meta"><span>🔥 連続記録</span><strong><span class="streak">${Math.min(30,done.length||0)} 日</span></strong></div></div></div></section>
- ${active?`<div class="card resume"><div class="row between"><div><b>Quiz tersimpan</b><div class="muted small">Day ${active.day} · Soal ${active.i+1}/${active.items.length}</div></div><button class="btn primary" id="resumeBtn">Lanjutkan →</button></div></div>`:''}
- <div class="section-title">Mulai belajar</div><div class="action-grid"><button class="action a-blue" data-action="quiz"><div class="icon">📝</div><h3>今日のクイズ</h3><p>Latihan soal untuk menguji ingatanmu.</p><span class="arrow">→</span></button><button class="action a-purple" data-action="flash"><div class="icon">🃏</div><h3>フラッシュカード</h3><p>Hafalkan kosakata dengan cepat.</p><span class="arrow">→</span></button><button class="action a-green" data-action="list"><div class="icon">📖</div><h3>単語一覧</h3><p>Lihat semua kosakata dan cari Kanji.</p><span class="arrow">→</span></button><button class="action a-orange" data-action="manage"><div class="icon">📊</div><h3>進捗</h3><p>Periksa progres dan kartu tersimpan.</p><span class="arrow">→</span></button></div>
- <div class="quote"><div class="quote-icon">⛩️</div><div><b>継続は力なり</b><small>— Terus melangkah, kemampuan akan bertambah —</small></div></div>`;
- document.querySelectorAll('[data-action]').forEach(b=>b.addEventListener('click',()=>{currentSession=null;show(b.dataset.action==='quiz'?'quiz':b.dataset.action);}));
- if(active)$('resumeBtn').addEventListener('click',()=>{currentSession=state.active;quiz();});
-}
-function quizMenu(){
- const active=state.active;
- $('app').innerHTML=`<div class="card"><h2>📝 Quiz N2</h2>
- ${active?`<div class="notice">Ada quiz tersimpan: Day ${active.day}, soal ${active.i+1}/${active.items.length}<br><button class="btn primary" id="resumeQuiz" style="margin-top:8px">Lanjutkan Quiz →</button></div>`:''}
- <div class="grid">
- <div><label class="label">Day</label><select id="day" class="field">${[...Array(35)].map((_,i)=>`<option value="${i+1}">Day ${i+1}</option>`).join('')}</select></div>
- <div><label class="label">Jumlah Soal</label><select id="num" class="field"><option>10</option><option>20</option><option>50</option><option>100</option></select></div>
- <div><label class="label">Mode</label><select id="mode" class="field"><option value="kr">Kanji → Reading</option><option value="rk">Reading → Kanji</option><option value="km">Kanji → Arti</option><option value="mix">Mix</option></select></div>
- <div><label class="label">Waktu / Soal</label><select id="timer" class="field"><option value="15">15 detik</option><option value="20">20 detik</option><option value="30">30 detik</option><option value="60">60 detik</option></select></div>
- </div>
- <button class="btn primary" id="startQuiz" style="margin-top:16px;width:100%">Mulai Quiz →</button>
- </div>`;
- $('startQuiz').addEventListener('click',()=>{
-  start(
-    Number($('day').value),
-    $('mode').value,
-    Number($('timer').value),
-    Number($('num').value)
-  );
-});
-if(active)$('resumeQuiz').addEventListener('click',()=>{currentSession=state.active;quiz();});
-}
-function start(day,mode,timer,batchSize){
-  const pool=dayData(day);
-  const qp=state.quizProgress[day]||{seen:[],repeat:[]};
-  const seen=new Set(qp.seen||[]);
-  const repeat=new Set(qp.repeat||[]);
-
-  let fresh=shuffle(pool.filter(x=>!seen.has(String(x.id))));
-  fresh=fresh.slice(0,Math.min(batchSize,fresh.length));
-
-  fresh.forEach(x=>seen.add(String(x.id)));
-
-  let items=fresh.map(x=>({...x,_repeat:false}));
-
-  if(!items.length){
-    items=shuffle(pool.filter(x=>repeat.has(String(x.id))))
-      .slice(0,batchSize)
-      .map(x=>({...x,_repeat:true}));
-  }
-
-  if(!items.length){
-    alert('この日の問題はすべてマスターしました！');
-    quizMenu();
-    return;
-  }
-
-  qp.seen=[...seen];
-  state.quizProgress[day]=qp;
-
-  currentSession={
-    id:Date.now(),
-    day,
-    mode,
-    timer,
-    batchSize,
-    items,
-    i:0,
-    score:0,
-    left:timer,
-    answers:[]
-  };
-
-  state.active=currentSession;
-  save();
-  quiz();
-}
- function quiz(){
- if(!currentSession){home();return}const s=currentSession;if(s.i>=s.items.length){finish();return}
- const q=s.items[s.i];let m=s.mode;if(m==='mix')m=shuffle(['kr','rk','km'])[0];
- const prompt=m==='rk'?q.reading:q.kanji;const correct=m==='kr'?q.reading:m==='rk'?q.kanji:q.meaning;
- const vals=dayData(s.day).map(x=>m==='kr'?x.reading:m==='rk'?x.kanji:x.meaning);const opts=options(correct,vals);const saved=!!state.savedCards[q.id];
- $('app').innerHTML=`<div class="card"><div class="row between"><span class="pill">Day ${s.day} · ${s.i+1}/${s.items.length}</span><span class="pill">⏱ <b id="clock">${s.left}</b>s</span></div>
- <div class="bar"><div style="width:${(s.i/s.items.length)*100}%"></div></div><div class="big">${esc(prompt)}</div><div class="sub muted">${m==='kr'?'Pilih bacaan':m==='rk'?'Pilih Kanji':'Pilih arti'}</div>
- <div class="answers" id="answers">${opts.map((o,j)=>`<button class="ans" data-answer="${esc(o)}">${esc(o)}</button>`).join('')}</div>
- <div id="feedback" class="feedback"></div><div class="row between" style="margin-top:14px"><button class="btn" id="saveQuiz">💾 Simpan Progress</button><button class="btn ${saved?'saved':''}" id="saveCard">${saved?'★ Tersimpan':'☆ Simpan Kartu'}</button><button class="btn danger" id="exitQuiz">Keluar</button></div></div>`;
- $('answers').addEventListener('click',e=>{const b=e.target.closest('[data-answer]');if(b)answer(b.dataset.answer,correct);});
- $('saveQuiz').addEventListener('click',()=>{state.active=currentSession;save();notice('Progress quiz sudah disimpan di perangkat ini.');});
- $('saveCard').addEventListener('click',()=>toggleSaved(q));$('exitQuiz').addEventListener('click',quitQuiz);
- clearInterval(quizTimer);quizTimer=setInterval(()=>{if(!currentSession)return;currentSession.left--;const c=$('clock');if(c)c.textContent=currentSession.left;if(currentSession.left<=0)answer(null,correct);},1000);
-}
-function answer(value,correct){
-  if(!currentSession)return;
-
-  const s=currentSession;
-  const item=s.items[s.i];
-  const ok=value!==null && value===correct;
-  const day=s.day;
-
-  const qp=state.quizProgress[day]||{seen:[],repeat:[]};
-  const rep=new Set(qp.repeat||[]);
-
-  if(ok){
-    s.score++;
-    rep.delete(String(item.id));
-  }else{
-    rep.add(String(item.id));
-  }
-
-  qp.repeat=[...rep];
-  state.quizProgress[day]=qp;
-
-  s.answers.push({
-    id:item.id,
-    correct:ok,
-    repeat:item._repeat||false
-  });
-
-  save();
-
-  s.i++;
-
-  if(s.i>=s.items.length){
-    finish();
-  }else{
-    s.left=s.timer;
-    quiz();
-  }
-}
-function finish(){
-  if(!currentSession)return;
-
-  const s=currentSession;
-  const wrong=s.answers.filter(a=>!a.correct).length;
-
-  const qp=state.quizProgress[s.day]||{seen:[],repeat:[]};
-  const repeatCount=(qp.repeat||[]).length;
-
-  state.sessions[s.id]={
-    day:s.day,
-    score:s.score,
-    total:s.items.length,
-    wrong,
-    repeat:repeatCount,
-    date:Date.now()
-  };
-
-  state.active=null;
-  save();
-
-  const pool=dayData(s.day);
-  const seen=new Set(qp.seen||[]);
-  const hasNew=pool.some(x=>!seen.has(String(x.id)));
-  const hasRepeat=repeatCount>0;
-  const hasNext=hasNew||hasRepeat;
-
-  app.innerHTML=`
-    <div class="screen">
-      <div class="topbar">
-        <button class="back" onclick="quizMenu()">‹</button>
-        <div class="title">結果</div>
-      </div>
-
-      <div class="result-card">
-        <div class="result-title">クイズ終了！</div>
-
-        <div class="result-score">
-          ${s.score} / ${s.items.length}
-        </div>
-
-        <div class="result-stats">
-          <div>
-            <b>${s.score}</b>
-            <span>正解</span>
-          </div>
-
-          <div>
-            <b>${wrong}</b>
-            <span>不正解</span>
-          </div>
-
-          <div>
-            <b>${repeatCount}</b>
-            <span>復習</span>
-          </div>
-        </div>
-
-        ${
-          hasNext
-          ? `<button class="primary" id="nextBtn">
-              Next →
-            </button>`
-          : `<button class="primary" id="nextBtn">
-              完了
-            </button>`
-        }
-
-        <button class="secondary" id="menuBtn">
-          クイズメニューへ
-        </button>
-      </div>
-    </div>
-  `;
-
-  const nextBtn=$('nextBtn');
-  if(nextBtn){
-    nextBtn.addEventListener('click',()=>{
-      if(hasNext){
-        nextBatch(s.day,s.mode,s.timer,s.batchSize);
-      }else{
-        quizMenu();
-      }
-    });
-  }
-
-  const menuBtn=$('menuBtn');
-  if(menuBtn){
-    menuBtn.addEventListener('click',quizMenu);
-}
- 
-}function nextBatch(day,mode,timer,batchSize){
-  const pool=dayData(day);
-  const qp=state.quizProgress[day]||{seen:[],repeat:[]};
-
-  const seen=new Set(qp.seen||[]);
-  const rep=new Set(qp.repeat||[]);
-
-  const fresh=shuffle(
-    pool.filter(x=>!seen.has(String(x.id)))
-  ).slice(0,batchSize);
-
-  fresh.forEach(x=>seen.add(String(x.id)));
-
-  const repeatItems=shuffle(
-    pool.filter(x=>rep.has(String(x.id)))
-  );
-
-  const items=[
-    ...fresh.map(x=>({...x,_repeat:false})),
-    ...repeatItems.map(x=>({...x,_repeat:true}))
-  ];
-
-  if(!items.length){
-    quizMenu();
-    return;
-  }
-
-  qp.seen=[...seen];
-  state.quizProgress[day]=qp;
-
-  currentSession={
-    id:Date.now(),
-    day,
-    mode,
-    timer,
-    batchSize,
-    items,
-    i:0,
-    score:0,
-    left:timer,
-    answers:[]
-  };
-
-  state.active=currentSession;
-
-  save();
-  quiz();
-}
-function quitQuiz(){clearInterval(quizTimer);if(currentSession){state.active=currentSession;save();}currentSession=null;home();notice('Progress tersimpan. Kamu bisa melanjutkannya dari menu Quiz.');}
-function notice(t){const n=document.createElement('div');n.className='notice';n.textContent=t;$('app').prepend(n);setTimeout(()=>n.remove(),2500);}
-function toggleSaved(q){const k=String(q.id);if(state.savedCards[k])delete state.savedCards[k];else state.savedCards[k]=true;save();if(currentSession)quiz();else flash();}
-function savedCards(){flashDay='saved';flashIndex=0;flashFlipped=false;flash();}
-function flash(){
- const days=[...Array(35)].map((_,i)=>i+1);let rows=flashDay==='saved'?all().filter(q=>state.savedCards[String(q.id)]):dayData(flashDay);if(!rows.length){$('app').innerHTML=`<div class="card empty"><h2>${flashDay==='saved'?'Belum ada kartu tersimpan':'Tidak ada kosakata'}</h2><button class="btn" id="backFlash">Kembali</button></div>`;$('backFlash').addEventListener('click',()=>{flashDay=1;flashIndex=0;flash();});return;}if(flashIndex>=rows.length)flashIndex=rows.length-1;const q=rows[flashIndex];
- $('app').innerHTML=`<div class="card"><h2>Flashcards</h2><div class="grid"><div><label class="label">Day</label><select id="flashDay" class="field"><option value="saved">★ Kartu Tersimpan</option>${days.map(d=>`<option value="${d}" ${d===flashDay?'selected':''}>Day ${d}</option>`).join('')}</select></div></div></div>
- <div class="card"><div class="flash-wrap"><div class="flash ${flashFlipped?'flipped':''}" id="flashCard"><div class="flash-face flash-front"><div><div class="big">${esc(q.kanji)}</div><div class="muted">Tap kartu untuk membalik</div></div></div><div class="flash-face flash-back"><div><div class="sub">${esc(q.reading)}</div><div class="sub">${esc(q.meaning)}</div><div class="muted">Tap kartu untuk kembali</div></div></div></div></div>
- <div class="flash-nav"><button class="btn" id="prev">← Back</button><span>${flashIndex+1}/${rows.length}</span><button class="btn" id="next">Next →</button></div>
- <div class="row" style="justify-content:center;margin-top:12px"><button class="btn ${state.savedCards[String(q.id)]?'saved':''}" id="saveFlash">${state.savedCards[String(q.id)]?'★ Tersimpan':'☆ Simpan Kartu'}</button></div></div>`;
- $('flashDay').addEventListener('change',e=>{flashDay=e.target.value==='saved'?'saved':Number(e.target.value);flashIndex=0;flashFlipped=false;flash();});$('flashCard').addEventListener('click',()=>{flashFlipped=!flashFlipped;const c=$('flashCard');c.classList.toggle('flipped',flashFlipped);});$('prev').addEventListener('click',()=>{flashIndex=(flashIndex-1+rows.length)%rows.length;flashFlipped=false;flash();});$('next').addEventListener('click',()=>{flashIndex=(flashIndex+1)%rows.length;flashFlipped=false;flash();});$('saveFlash').addEventListener('click',()=>toggleSaved(q));
-}
-function list(){const d=listDay;$('app').innerHTML=`<div class="card"><h2>Search & Kanji List</h2><div class="grid"><div><label class="label">Day</label><select id="listDay" class="field">${[...Array(35)].map((_,i)=>`<option ${i+1===d?'selected':''}>${i+1}</option>`).join('')}</select></div><div><label class="label">Search</label><input id="search" class="field" placeholder="Kanji / reading / meaning"></div></div></div><div class="card"><div id="table"></div></div>`;$('listDay').addEventListener('change',e=>{listDay=Number(e.target.value);list();});$('search').addEventListener('input',renderTable);renderTable();}
-function renderTable(){const q=($('search')?.value||'').toLowerCase();const rows=dayData(listDay).filter(x=>(x.kanji+x.reading+x.meaning).toLowerCase().includes(q));$('table').innerHTML=`<div class="tablewrap"><table class="table"><tr><th>No.</th><th>Kanji</th><th>Reading</th><th>Meaning</th></tr>${rows.map(x=>`<tr><td>${x.no}</td><td>${esc(x.kanji)}</td><td>${esc(x.reading)}</td><td>${esc(x.meaning)}</td></tr>`).join('')}</table></div>`;}
-function manage(){$('app').innerHTML=`<div class="card"><h2>Database & Progress</h2><p>Total built-in: <b>${DATA.length}</b></p><p>Custom: <b>${state.custom.length}</b></p><p>Quiz selesai: <b>${Object.keys(state.completed).length}</b></p><p>Kartu tersimpan: <b>${Object.keys(state.savedCards).length}</b></p><input id="file" type="file" accept=".csv,.txt" class="field"><button class="btn primary" id="import" style="margin-top:10px">Import CSV</button><button class="btn danger" id="clearCustom" style="margin-top:10px">Hapus data import</button><hr><button class="btn" id="clearProgress">Hapus progress quiz</button><button class="btn" id="clearSaved">Hapus semua kartu tersimpan</button></div>`;$('import').addEventListener('click',importCSV);$('clearCustom').addEventListener('click',()=>{if(confirm('Hapus semua data import?')){state.custom=[];save();manage();}});$('clearProgress').addEventListener('click',()=>{if(confirm('Hapus semua progress quiz?')){state.completed={};delete state.active;save();manage();}});$('clearSaved').addEventListener('click',()=>{if(confirm('Hapus semua kartu tersimpan?')){state.savedCards={};save();manage();}});}
-function importCSV(){const f=$('file').files[0];if(!f)return alert('Pilih file CSV.');const r=new FileReader();r.onload=()=>{const lines=String(r.result).split(/\r?\n/).filter(Boolean);let added=0;for(const line of lines.slice(1)){const p=line.split(',').map(x=>x.trim().replace(/^"|"$/g,''));if(p.length>=3){const idx=DATA.length+state.custom.length;state.custom.push({id:'custom-'+Date.now()+'-'+added,day:Math.floor(idx/100)+1,no:idx%100+1,kanji:p[0],reading:p[1],meaning:p.slice(2).join(',')});added++;}}save();alert(added+' entries imported.');setCount();manage();};r.readAsText(f);}
-setCount();home();
-if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));
-})();
-</script>
-</body></html>
+const shuffle=a=>[...a].sort(()=>Math.random()-.5); const save=()=>localStorage.setItem(STORE,JSON.stringify(state));
+let state={seen:{},repeat:{},sessions:[],active:null,saved:{}}; try{state={...state,...JSON.parse(localStorage.getItem(STORE)||'{}')}}catch(e){}
+let session=null,timerId=null,flash={day:1,index:0,flipped:false};
+function toast(t){const e=$('toast');e.textContent=t;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),1500)}
+function progressCount(){return Object.values(state.seen||{}).reduce((n,a)=>n+(Array.isArray(a)?a.length:0),0)}
+function nav(active){return `<nav class="bottom"><button class="nav ${active==='home'?'active':''}" data-nav="home"><span>⌂</span>Home</button><button class="nav ${active==='quiz'?'active':''}" data-nav="quiz"><span>✎</span>Quiz</button><button class="nav ${active==='flash'?'active':''}" data-nav="flash"><span>◈</span>Flash</button><button class="nav ${active==='list'?'active':''}" data-nav="list"><span>▤</span>単語</button></nav>`}
+function shell(content,active){APP.innerHTML=content+nav(active); APP.querySelectorAll('[data-nav]').forEach(b=>b.onclick=()=>show(b.dataset.nav))}
+function home(){const p=progressCount(),pct=Math.min(100,p/DATA.length*100),days=Math.min(35,Math.floor(p/100)+1); shell(`<div class="page"><section class="hero"><h1>KUIS N2</h1><p>JLPT N2 Vocabulary · 35 Days</p><div class="fuji"></div></section><div class="greeting">こんにちは 👋 今日は Day ${days} を進めよう。</div><section class="progress-card"><div class="progress-row"><div><span>学習進捗</span><strong>${p} / ${DATA.length}</strong></div><span>${pct.toFixed(1)}%</span></div><div class="bar"><i style="width:${pct}%"></i></div></section><div class="actions"><button class="action" id="goQuiz"><div class="ico">📝</div><b>今日のクイズ</b><small>10問からスタート</small></button><button class="action" id="goFlash"><div class="ico">🃏</div><b>フラッシュカード</b><small>タップ・スワイプ</small></button><button class="action" id="goList"><div class="ico">📚</div><b>単語一覧</b><small>Dayごとに確認</small></button><button class="action" id="goProgress"><div class="ico">📈</div><b>進捗</b><small>学習記録を見る</small></button></div><div class="quote">「継続は力なり」</div></div>`,'home'); $('goQuiz').onclick=()=>quizMenu();$('goFlash').onclick=()=>flashView();$('goList').onclick=()=>listView();$('goProgress').onclick=()=>progressView()}
+function top(title,back=true){return `<div class="top">${back?'<button class="back" id="back">‹</button>':''}<h2>${title}</h2></div>`}
+function quizMenu(){shell(`<div class="page">${top('Quiz')}<div class="sub">Pilih hari, mode, dan jumlah soal.</div><div class="section-title">Hari</div><div class="day-grid">${Array.from({length:35},(_,i)=>`<button class="day" data-day="${i+1}"><b>${i+1}</b><small>${dayData(i+1).length} kata</small></button>`).join('')}</div><div class="section-title">Mode</div><div class="mode-grid"><button class="choice active" data-mode="kr"><b>Kanji → Reading</b><small>Pilih cara baca</small></button><button class="choice" data-mode="rk"><b>Reading → Kanji</b><small>Pilih kanji</small></button><button class="choice" data-mode="km"><b>Kanji → Arti</b><small>Pilih arti Indonesia</small></button><button class="choice" data-mode="mix"><b>Mix</b><small>Campuran</small></button></div><div class="section-title">Timer</div><div class="mode-grid"><button class="choice active" data-time="20">20 detik / soal</button><button class="choice" data-time="30">30 detik / soal</button><button class="choice" data-time="60">60 detik / soal</button></div><div class="section-title">Jumlah soal</div><div class="mode-grid"><button class="choice active" data-count="10">10 soal</button><button class="choice" data-count="20">20 soal</button><button class="choice" data-count="50">50 soal</button></div><br><button class="startbtn" id="startQuiz">Mulai Quiz →</button></div>`,'quiz');let day=1,mode='kr',time=20,count=10;APP.querySelectorAll('[data-day]').forEach(b=>b.onclick=()=>{day=+b.dataset.day;APP.querySelectorAll('[data-day]').forEach(x=>x.classList.remove('active'));b.classList.add('active')});APP.querySelector('[data-day="1"]').classList.add('active');[['mode',()=>mode],['time',()=>time],['count',()=>count]].forEach(([kind,get])=>APP.querySelectorAll(`[data-${kind}]`).forEach(b=>b.onclick=()=>{if(kind==='mode')mode=b.dataset.mode;if(kind==='time')time=+b.dataset.time;if(kind==='count')count=+b.dataset.count;APP.querySelectorAll(`[data-${kind}]`).forEach(x=>x.classList.remove('active'));b.classList.add('active')}));$('startQuiz').onclick=()=>startQuiz(day,mode,time,count);$('back').onclick=home}
+function buildItems(day,count){const seen=new Set((state.seen[day]||[]).map(String)),rep=new Set((state.repeat[day]||[]).map(String));const fresh=shuffle(dayData(day).filter(x=>!seen.has(String(x.id)))).slice(0,count);fresh.forEach(x=>seen.add(String(x.id)));let items=fresh.map(x=>({...x,_repeat:false}));if(!items.length)items=shuffle(dayData(day).filter(x=>rep.has(String(x.id)))).slice(0,count).map(x=>({...x,_repeat:true}));state.seen[day]=[...seen];save();return items}
+function startQuiz(day,mode,time,count){const items=buildItems(day,count);if(!items.length){toast('Day ini sudah selesai 🎉');return}session={day,mode,time,count,items,i:0,score:0,answers:[],left:time,locked:false};state.active=session;save();renderQuestion()}
+function renderQuestion(){clearInterval(timerId);if(!session)return;if(session.i>=session.items.length){finish();return}const q=session.items[session.i];let mode=session.mode;if(mode==='mix')mode=shuffle(['kr','rk','km'])[0];session.currentMode=mode;const correct=mode==='kr'?q.reading:mode==='rk'?q.kanji:q.meaning;const pool=dayData(session.day).map(x=>mode==='kr'?x.reading:mode==='rk'?x.kanji:x.meaning);const opts=shuffle([correct,...shuffle([...new Set(pool.filter(x=>x!==correct))]).slice(0,3)]);const prompt=mode==='rk'?q.reading:mode==='km'?q.kanji:q.kanji;APP.innerHTML=`<div class="page"><div class="quiz-head"><span class="pill">Day ${session.day} · ${session.i+1}/${session.items.length}</span><span class="pill timer">⏱ <b id="clock">${session.left}</b>s</span></div><div class="bar"><i style="width:${session.i/session.items.length*100}%"></i></div><br><section class="quiz-card"><div class="qmeta">${mode==='kr'?'読み方は？':mode==='rk'?'漢字は？':'意味は？'}</div><div class="prompt ${mode==='km'?'meaning':''}">${esc(prompt)}</div><div class="answers" id="answers">${opts.map(o=>`<button class="answer" data-answer="${esc(o)}">${esc(o)}</button>`).join('')}</div><div class="quiz-tools"><button class="secondary" id="saveQ">💾 保存</button><button class="secondary" id="exitQ">終了</button></div></section></div>`; $('answers').onclick=e=>{const b=e.target.closest('[data-answer]');if(b)answer(b.dataset.answer,correct)};$('saveQ').onclick=()=>{state.active=session;save();toast('Progress disimpan di perangkat');};$('exitQ').onclick=()=>{if(confirm('Keluar dari quiz? Progress soal saat ini tetap tersimpan.')){clearInterval(timerId);quizMenu()}};timerId=setInterval(()=>{if(!session)return;session.left--;const c=$('clock');if(c)c.textContent=session.left;if(session.left<=0)answer(null,correct)},1000)}
+function answer(value,correct){if(!session||session.locked)return;session.locked=true;clearInterval(timerId);const q=session.items[session.i],ok=value!==null&&value===correct;const rep=new Set((state.repeat[session.day]||[]).map(String));if(ok){session.score++;rep.delete(String(q.id))}else rep.add(String(q.id));state.repeat[session.day]=[...rep];session.answers.push({id:q.id,correct:ok});save();const btn=[...APP.querySelectorAll('.answer')].find(b=>b.dataset.answer===value);if(btn)btn.style.borderColor=ok?'#78b997':'#d9899b';setTimeout(()=>{session.i++;session.left=session.time;session.locked=false;state.active=session;save();renderQuestion()},220)}
+function finish(){if(!session)return;clearInterval(timerId);const s=session,wrong=s.answers.filter(a=>!a.correct).length;state.sessions.unshift({day:s.day,score:s.score,total:s.items.length,wrong,date:Date.now()});state.sessions=state.sessions.slice(0,100);state.active=null;save();const rep=(state.repeat[s.day]||[]).length;const freshLeft=dayData(s.day).filter(x=>!(state.seen[s.day]||[]).map(String).includes(String(x.id))).length;APP.innerHTML=`<div class="page"><div class="result"><div class="pill">Day ${s.day} selesai</div><h2>お疲れさま！</h2><div class="score">${s.score}/${s.items.length}</div><div class="stats"><div class="stat"><b>${s.score}</b><small>正解</small></div><div class="stat"><b>${wrong}</b><small>不正解</small></div><div class="stat"><b>${rep}</b><small>復習</small></div></div><p style="color:var(--muted);font-size:13px">${freshLeft?freshLeft+' kata baru masih tersedia.':rep?'Ada kata yang perlu diulang.':'Day ini selesai.'}</p><button class="primary" id="next">${freshLeft||rep?'Lanjut latihan':'Kembali ke Quiz'}</button><br><br><button class="secondary" id="menu">Quiz Menu</button></div></div>`;$('next').onclick=()=>freshLeft||rep?startQuiz(s.day,s.mode,s.time,s.count):quizMenu();$('menu').onclick=quizMenu}
+function flashView(){const d=flash.day;const data=dayData(d);if(flash.index>=data.length)flash.index=0;const q=data[flash.index];shell(`<div class="page">${top('Flashcard')}<div class="sub">Day ${d} · ${flash.index+1}/${data.length}</div><div class="day-grid" style="grid-template-columns:1fr 1fr;margin-bottom:12px"><button class="day" id="prevDay">← Day</button><button class="day" id="nextDay">Day →</button></div><div class="flash-wrap"><div class="flash-card ${flash.flipped?'flipped':''}" id="fc"><div class="flash-face"><div class="qmeta">KANJI</div><div class="flash-kanji">${esc(q.kanji)}</div><div class="flash-reading">${esc(q.reading)}</div><div class="swipe-hint">Tap untuk membalik</div></div><div class="flash-face back"><div class="qmeta">ARTI</div><div class="flash-meaning">${esc(q.meaning)}</div><div class="flash-reading">${esc(q.reading)}</div><div class="swipe-hint">Geser kiri / kanan untuk pindah</div></div></div></div><div class="swipe-hint">← Geser kiri: berikutnya · kanan: sebelumnya →</div><div class="flash-controls"><button class="secondary" id="prev">← Sebelumnya</button><button class="primary" id="next">Berikutnya →</button></div></div>`,'flash');$('back').onclick=home;$('fc').onclick=()=>{flash.flipped=!flash.flipped;flashView()};$('prev').onclick=()=>flashMove(-1);$('next').onclick=()=>flashMove(1);$('prevDay').onclick=()=>{flash.day=Math.max(1,flash.day-1);flash.index=0;flash.flipped=false;flashView()};$('nextDay').onclick=()=>{flash.day=Math.min(34,flash.day+1);flash.index=0;flash.flipped=false;flashView()};let sx=0,sy=0;const fc=$('fc');fc.addEventListener('touchstart',e=>{sx=e.changedTouches[0].clientX;sy=e.changedTouches[0].clientY},{passive:true});fc.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;if(Math.abs(dx)>55&&Math.abs(dx)>Math.abs(dy)){flashMove(dx<0?1:-1)}},{passive:true})}
+function flashMove(dir){const n=dayData(flash.day).length;flash.index=(flash.index+dir+n)%n;flash.flipped=false;flashView()}
+function listView(){let d=1,query='';const render=()=>{const data=dayData(d).filter(q=>(q.kanji+' '+q.reading+' '+q.meaning).toLowerCase().includes(query.toLowerCase()));shell(`<div class="page">${top('単語一覧')}<div class="sub">Cari kosakata per hari.</div><div class="day-grid" style="grid-template-columns:repeat(6,1fr);margin-bottom:12px">${Array.from({length:34},(_,i)=>`<button class="day ${d===i+1?'active':''}" data-d="${i+1}">${i+1}</button>`).join('')}</div><input class="list-search" id="search" placeholder="Cari kanji, reading, arti..." value="${esc(query)}"><div class="card" style="padding:4px 14px">${data.map(q=>`<div class="word"><div><b>${esc(q.kanji)}</b><small>${esc(q.reading)}</small></div><div class="meaning">${esc(q.meaning)}</div></div>`).join('')||'<div class="empty">Tidak ditemukan.</div>'}</div></div>`,'list');$('back').onclick=home;APP.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>{d=+b.dataset.d;render()});$('search').oninput=e=>{query=e.target.value;const words=APP.querySelector('.card');const arr=dayData(d).filter(q=>(q.kanji+' '+q.reading+' '+q.meaning).toLowerCase().includes(query.toLowerCase()));words.innerHTML=arr.map(q=>`<div class="word"><div><b>${esc(q.kanji)}</b><small>${esc(q.reading)}</small></div><div class="meaning">${esc(q.meaning)}</div></div>`).join('')||'<div class="empty">Tidak ditemukan.</div>'}};render()}
+function progressView(){const p=progressCount(),sessions=state.sessions||[],correct=sessions.reduce((n,s)=>n+s.score,0),total=sessions.reduce((n,s)=>n+s.total,0);shell(`<div class="page">${top('進捗')}<div class="manage-grid"><div class="stat-card"><small>Vocabulary seen</small><br><strong>${p}</strong> / ${DATA.length}</div><div class="stat-card"><small>Quiz dikerjakan</small><br><strong>${sessions.length}</strong></div><div class="stat-card"><small>Rata-rata jawaban</small><br><strong>${total?Math.round(correct/total*100):0}%</strong></div><button class="secondary danger" id="reset">Reset semua progress</button></div><div class="section-title">Riwayat terbaru</div><div class="card">${sessions.slice(0,12).map(s=>`<div class="word"><div><b>Day ${s.day}</b><small>${new Date(s.date).toLocaleDateString('id-ID')}</small></div><div class="meaning">${s.score}/${s.total}</div></div>`).join('')||'<div class="empty">Belum ada riwayat quiz.</div>'}</div></div>`,'');$('back').onclick=home;$('reset').onclick=()=>{if(confirm('Hapus semua progress di perangkat ini?')){state={seen:{},repeat:{},sessions:[],active:null,saved:{}};save();toast('Progress direset');progressView()}}}
+function show(v){clearInterval(timerId);if(v==='home')home();else if(v==='quiz')quizMenu();else if(v==='flash')flashView();else listView()}
+if(state.active&&state.active.items){/* keep saved session available without forcing resume */}home();
+})();</script><script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js"))}</script></body></html>
