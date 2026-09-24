@@ -235,12 +235,9 @@ function finish(){
 
         ${
           hasNext
-          ? `<button class="primary" onclick="nextBatch(${s.day},'${s.mode}',${s.timer},${s.batchSize})">
-              Next →
-            </button>`
-          : `<button class="primary" onclick="quizMenu()">
-              完了
-            </button>`
+        <button type="button" class="primary" id="nextBtn">
+  Next →
+</button>
         }
 
         <button class="secondary" onclick="quizMenu()">
