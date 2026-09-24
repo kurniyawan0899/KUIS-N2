@@ -123,10 +123,7 @@ function start(day,mode,timer,batchSize){
   save();
   quiz();
 }
- const d=Number($('day').value),pool=shuffle(dayData(d));if(!pool.length){alert('Day ini belum memiliki kosakata.');return;}
- const n=Math.min(Number($('num').value),pool.length);currentSession={id:Date.now(),day:d,mode:$('mode').value,timer:Number($('timer').value),items:pool.slice(0,n),i:0,score:0,left:Number($('timer').value),answers:[]};state.active=currentSession;save();quiz();
-}
-function quiz(){
+ function quiz(){
  if(!currentSession){home();return}const s=currentSession;if(s.i>=s.items.length){finish();return}
  const q=s.items[s.i];let m=s.mode;if(m==='mix')m=shuffle(['kr','rk','km'])[0];
  const prompt=m==='rk'?q.reading:q.kanji;const correct=m==='kr'?q.reading:m==='rk'?q.kanji:q.meaning;
