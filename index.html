@@ -19,7 +19,7 @@
 <script>
 (()=>{"use strict";
 const APP=document.getElementById("app"), TOAST=document.getElementById("toast");
-const DBKEY="kuisN2_database_v2", PKEY="kuisN2_progress_v2", GKEY="kuisN2_google_client_id";
+const DBKEY="kuisN2_database_v2", PKEY="kuisN2_progress_v2";
 const BUILTIN=(window.KANJI_DATA||[]).map(normalize);
 function normalize(x,i){return{id:String(x.id??("v"+i)),day:Number(x.day)||0,no:Number(x.no)||i+1,kanji:String(x.kanji??""),reading:String(x.reading??""),meaning:String(x.meaning??"")}}
 function loadDB(){try{const x=JSON.parse(localStorage.getItem(DBKEY)||"null");if(Array.isArray(x)&&x.length)return x}catch(e){}return BUILTIN}
@@ -64,7 +64,7 @@ document.getElementById("start").onclick=()=>startQuiz(day,mode,difficulty,secon
 function lev(a,b){a=String(a).toLowerCase();b=String(b).toLowerCase();let prev=Array.from({length:b.length+1},(_,i)=>i);for(let i=1;i<=a.length;i++){let cur=[i];for(let j=1;j<=b.length;j++)cur[j]=Math.min(cur[j-1]+1,prev[j]+1,prev[j-1]+(a[i-1]===b[j-1]?0:1));prev=cur}return prev[b.length]}
 function hiraToKata(s){return String(s).replace(/[ぁ-ゖ]/g,c=>String.fromCharCode(c.charCodeAt(0)+0x60))}
 function hardReadingScore(correct,candidate){if(candidate===correct)return -999;let a=hiraToKata(correct),b=hiraToKata(candidate),d=lev(a,b),max=Math.max(a.length,b.length,1),score=1-d/max;if(a[0]===b[0])score+=0.22;if(a.slice(-1)===b.slice(-1))score+=0.10;let prefix=0;while(prefix<Math.min(a.length,b.length)&&a[prefix]===b[prefix])prefix++;score+=prefix*0.06;return score}
-function buildOptions(q,mode,difficulty){let correct=mode==="kr"?q.reading:mode==="rk"?q.kanji:q.meaning;let source=DB.filter(x=>String(x.id)!==String(q.id));let pool=[...new Map(source.map(x=>{let v=mode==="kr"?x.reading:mode==="rk"?x.kanji:x.meaning;return [String(v),v]})).values()].filter(v=>String(v)!==String(correct));if(difficulty!=="hard"||mode!=="kr")return shuffle([correct,...shuffle(pool).slice(0,3)]);let ranked=pool.map(v=>({v,score:hardReadingScore(correct,v)})).sort((a,b)=>b.score-a.score);let top=ranked.slice(0,Math.min(14,ranked.length));return shuffle([correct,...shuffle(top).slice(0,3).map(x=>x.v)])}
+function buildOptions(q,mode,difficulty){let correct=mode==="kr"?q.reading:mode==="rk"?q.kanji:q.meaning;let source=DB.filter(x=>String(x.id)!==String(q.id));let pool=[...new Map(source.map(x=>{let v=mode==="kr"?x.reading:mode==="rk"?x.kanji:x.meaning;return [String(v),v]})).values()].filter(v=>String(v)!==String(correct));if(difficulty!=="hard"||mode!=="kr")return shuffle([correct,...shuffle(pool).slice(0,3)]);let ranked=pool.map(v=>({v,score:hardReadingScore(correct,v)})).sort((a,b)=>b.score-a.score);let similar=ranked.filter(x=>x.score>=0.18).slice(0,14);if(similar.length<3)return shuffle([correct,...shuffle(pool).slice(0,3)]);return shuffle([correct,...shuffle(similar).slice(0,3).map(x=>x.v)])}
 function startQuiz(day,mode,difficulty,seconds,count){let arr=words(day);if(!arr.length){toast("Day ini belum memiliki kosakata");return}let seen=new Set((progress.seen[day]||[]).map(String)),rep=new Set((progress.repeat[day]||[]).map(String));let fresh=shuffle(arr.filter(x=>!seen.has(String(x.id))));let repeat=shuffle(arr.filter(x=>rep.has(String(x.id))));let items=[...fresh,...repeat].slice(0,count);if(!items.length)items=shuffle(arr).slice(0,count);items.forEach(x=>seen.add(String(x.id)));progress.seen[day]=[...seen];saveAll();quiz={day,mode,difficulty,seconds,count,items,i:0,score:0,wrong:0,locked:false};renderQuestion()}
 function renderQuestion(){clearInterval(timer);if(quiz.i>=quiz.items.length){finishQuiz();return}let q=quiz.items[quiz.i],mode=quiz.mode==="mix"?shuffle(["kr","rk","km"])[0]:quiz.mode;quiz.currentMode=mode;let correct=mode==="kr"?q.reading:mode==="rk"?q.kanji:q.meaning;let opts=buildOptions(q,mode,quiz.difficulty);APP.innerHTML=`<div class="page"><div class="quiz-head"><span class="pill">Day ${quiz.day} · ${quiz.i+1}/${quiz.items.length}</span><span class="pill">${quiz.difficulty==="hard"?"🔴 Sulit":"🟢 Normal"}</span><span class="pill">⏱ <b id="clock">${quiz.seconds}</b>s</span></div><div class="bar"><i style="width:${quiz.i/quiz.items.length*100}%"></i></div><br><section class="quiz-card"><div class="qmeta">${mode==="kr"?"読み方は？":mode==="rk"?"漢字は？":"意味は？"}</div><div class="prompt ${mode==="km"?"meaning":""}">${esc(mode==="rk"?q.reading:q.kanji)}</div><div class="answers" id="answers">${opts.map(o=>`<button class="answer" data-answer="${esc(o)}">${esc(o)}</button>`).join("")}</div><div class="quiz-tools"><button class="secondary" id="exit">終了</button></div></section></div>`;document.getElementById("answers").onclick=e=>{let b=e.target.closest("[data-answer]");if(b)answer(b.dataset.answer,correct)};document.getElementById("exit").onclick=()=>{clearInterval(timer);quizMenu()};let left=quiz.seconds;timer=setInterval(()=>{left--;let c=document.getElementById("clock");if(c)c.textContent=left;if(left<=0)answer(null,correct)},1000)}
 function answer(value,correct){if(!quiz||quiz.locked)return;quiz.locked=true;clearInterval(timer);let q=quiz.items[quiz.i],ok=value!==null&&value===correct,rep=new Set((progress.repeat[quiz.day]||[]).map(String));if(ok)rep.delete(String(q.id));else{rep.add(String(q.id));quiz.wrong++}quiz.score+=ok?1:0;progress.repeat[quiz.day]=[...rep];let btn=[...document.querySelectorAll(".answer")].find(x=>x.dataset.answer===value);if(btn)btn.classList.add(ok?"correct":"wrong");setTimeout(()=>{quiz.i++;quiz.locked=false;saveAll();renderQuestion()},260)}
@@ -80,17 +80,63 @@ function nextDayForNew(){return (days().at(-1)||0)+1}
 function importRows(rows){let clean=[],existing=new Set(DB.map(x=>String(x.kanji)+"|"+String(x.reading)));for(let r of rows){let x=normalize(r,Date.now()+Math.random());if(!x.kanji||!x.reading)continue;let key=x.kanji+"|"+x.reading;if(existing.has(key))continue;existing.add(key);clean.push({...x,day:0,no:0})}if(!clean.length)return 0;let day=nextDayForNew(),n=0;for(let x of clean){if(n===100){day++;n=0}x.day=day;x.no=words(day).length+1+n;DB.push(x);n++}saveAll();return clean.length}
 function parseCSV(text){let lines=text.replace(/^\uFEFF/,"").split(/\r?\n/).filter(x=>x.trim());if(!lines.length)return[];let sep=lines[0].includes("\t")?"\t":",";let head=splitCSV(lines[0],sep).map(x=>x.trim().toLowerCase());let idx={kanji:head.findIndex(x=>["kanji","漢字"].includes(x)),reading:head.findIndex(x=>["reading","furigana","読み","読み方"].includes(x)),meaning:head.findIndex(x=>["meaning","arti","意味"].includes(x))};return lines.slice(1).map(line=>{let c=splitCSV(line,sep);return{kanji:c[idx.kanji>=0?idx.kanji:0]||"",reading:c[idx.reading>=0?idx.reading:1]||"",meaning:c[idx.meaning>=0?idx.meaning:2]||""}})}
 function splitCSV(line,sep){let out=[],cur="",quote=false;for(let i=0;i<line.length;i++){let ch=line[i];if(ch==='"'){if(quote&&line[i+1]==='"'){cur+='"';i++}else quote=!quote}else if(ch===sep&&!quote){out.push(cur);cur=""}else cur+=ch}out.push(cur);return out}
-function dbView(){let last=days().at(-1)||0;let client=localStorage.getItem(GKEY)||"";shell(`<div class="page">${top("Database")}<div class="sub">Satu database untuk Quiz, Flashcard, 単語一覧 dan Progress.</div><div class="card"><div><b>Database aktif</b><div style="font-size:28px;font-weight:900;margin-top:5px">${DB.length.toLocaleString()}</div><span class="badge">${days().length} Day</span></div><div class="status">Kosakata baru akan otomatis masuk mulai <b>Day ${last+1}</b>, maksimal 100 kata per Day.</div></div><div class="section-title">Tambah / Update Database</div><div class="card"><input class="field" id="file" type="file" accept=".json,.csv,.txt"><p class="small">Format JSON: array objek <code>kanji, reading, meaning</code>. CSV: kolom Kanji, Reading/Furigana, Meaning.</p><div class="db-actions"><button class="secondary" id="export">📤 Export JSON</button><button class="secondary" id="resetdb">↺ Kembalikan Database Awal</button></div></div><div class="section-title">Google Drive</div><div class="card"><label class="small">Google OAuth Client ID</label><input class="field" id="client" placeholder="xxxxx.apps.googleusercontent.com" value="${esc(client)}"><br><br><div class="db-actions"><button class="secondary" id="saveDrive">☁️ Save Drive</button><button class="secondary" id="loadDrive">☁️ Load Drive</button></div><p class="small">Gunakan OAuth Web Client ID dari Google Cloud. Aplikasi memakai izin <code>drive.file</code>.</p><div class="status" id="driveStatus">Drive belum terhubung.</div></div></div>`,"db");document.getElementById("back").onclick=home;
-document.getElementById("file").onchange=e=>{let f=e.target.files[0];if(f)readImport(f)};document.getElementById("export").onclick=exportDB;document.getElementById("resetdb").onclick=()=>{if(confirm("Kembalikan database bawaan 3.320 kata? Data tambahan lokal akan hilang.")){DB=BUILTIN.map(x=>({...x}));saveAll();toast("Database awal dipulihkan");dbView()}};document.getElementById("client").onchange=e=>{localStorage.setItem(GKEY,e.target.value.trim())};document.getElementById("saveDrive").onclick=()=>driveAction("save");document.getElementById("loadDrive").onclick=()=>driveAction("load")}
+function backupProgress(){
+  const payload={app:"KUIS-N2",type:"progress-backup",version:2,savedAt:new Date().toISOString(),progress};
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);
+  a.download="KUIS-N2-PROGRESS-"+new Date().toISOString().slice(0,10)+".json";a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+  const s=document.getElementById("progressStatus");
+  if(s)s.textContent="Backup berhasil dibuat. Simpan file ini di Google Drive atau tempat aman.";
+  toast("Progress berhasil dibackup 💾");
+}
+function restoreProgressFile(file){
+  const reader=new FileReader();
+  reader.onload=()=>{
+    try{
+      const data=JSON.parse(String(reader.result));
+      if(data?.app!=="KUIS-N2"||data?.type!=="progress-backup"||!data?.progress||typeof data.progress!=="object")throw Error("invalid");
+      const savedAt=data.savedAt?new Date(data.savedAt).toLocaleString("id-ID"):"tanggal tidak diketahui";
+      if(!confirm("Restore backup dari "+savedAt+"? Progress saat ini akan diganti. Database kosakata tidak akan diubah."))return;
+      const old={app:"KUIS-N2",type:"progress-backup",version:2,savedAt:new Date().toISOString(),progress};
+      const blob=new Blob([JSON.stringify(old,null,2)],{type:"application/json"});
+      const a=document.createElement("a");a.href=URL.createObjectURL(blob);
+      a.download="KUIS-N2-PROGRESS-BEFORE-RESTORE-"+new Date().toISOString().slice(0,10)+".json";a.click();
+      setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+      progress={seen:{},repeat:{},sessions:[],...(data.progress||{})};
+      if(!progress.seen)progress.seen={};if(!progress.repeat)progress.repeat={};
+      if(!Array.isArray(progress.sessions))progress.sessions=[];
+      localStorage.setItem(PKEY,JSON.stringify(progress));
+      toast("Progress berhasil direstore 📂");home();
+    }catch(e){toast("File backup tidak valid")}
+  };
+  reader.readAsText(file);
+}
+function dbView(){
+  let last=days().at(-1)||0;
+  shell(`<div class="page">${top("Database")}
+  <div class="sub">Satu database untuk Quiz, Flashcard, 単語一覧 dan Progress.</div>
+  <div class="card"><div><b>Database aktif</b><div style="font-size:28px;font-weight:900;margin-top:5px">${DB.length.toLocaleString()}</div><span class="badge">${days().length} Day</span></div>
+  <div class="status">Kosakata baru akan otomatis masuk mulai <b>Day ${last+1}</b>, maksimal 100 kata per Day.</div></div>
+  <div class="section-title">Tambah / Update Database</div><div class="card"><input class="field" id="file" type="file" accept=".json,.csv,.txt">
+  <p class="small">Format JSON: array objek <code>kanji, reading, meaning</code>. CSV: kolom Kanji, Reading/Furigana, Meaning.</p>
+  <div class="db-actions"><button class="secondary" id="export">📤 Export JSON</button><button class="secondary" id="resetdb">↺ Kembalikan Database Awal</button></div></div>
+  <div class="section-title">💾 Backup / Restore Progress</div><div class="card">
+  <div class="status">Simpan progress sebagai file di perangkatmu. Upload file ini sendiri ke Google Drive bila ingin menyimpannya di cloud.</div><br>
+  <div class="db-actions"><button class="secondary" id="backupProgress">💾 Backup Progress</button><button class="secondary" id="restoreProgress">📂 Restore Progress</button></div>
+  <input id="progressFile" type="file" accept=".json" hidden>
+  <p class="small">Backup hanya berisi progress belajar dan riwayat quiz. Database kosakata tidak ditimpa saat Restore.</p>
+  <div class="status" id="progressStatus">Backup/Restore siap digunakan.</div></div></div>`,"db");
+  document.getElementById("back").onclick=home;
+  document.getElementById("file").onchange=e=>{let f=e.target.files[0];if(f)readImport(f)};
+  document.getElementById("export").onclick=exportDB;
+  document.getElementById("resetdb").onclick=()=>{if(confirm("Kembalikan database bawaan 3.320 kata? Data tambahan lokal akan hilang.")){DB=BUILTIN.map(x=>({...x}));saveAll();toast("Database awal dipulihkan");dbView()}};
+  document.getElementById("backupProgress").onclick=backupProgress;
+  document.getElementById("restoreProgress").onclick=()=>document.getElementById("progressFile").click();
+  document.getElementById("progressFile").onchange=e=>{let f=e.target.files[0];if(f)restoreProgressFile(f)};
+}
 function readImport(file){let reader=new FileReader();reader.onload=()=>{try{let text=String(reader.result),rows;if(file.name.toLowerCase().endsWith(".json")){let j=JSON.parse(text);rows=Array.isArray(j)?j:(Array.isArray(j.vocabulary)?j.vocabulary:[])}else rows=parseCSV(text);let n=importRows(rows);toast(n?`${n} kata ditambahkan`:"Tidak ada kata baru");dbView()}catch(e){toast("Format file tidak valid")}};reader.readAsText(file)}
 function exportDB(){let blob=new Blob([JSON.stringify({version:2,exportedAt:new Date().toISOString(),vocabulary:DB},null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="KUIS-N2-DATABASE.json";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
-let tokenClient=null,accessToken=null;
-function loadGIS(){return new Promise((resolve,reject)=>{if(window.google?.accounts?.oauth2)return resolve();let s=document.createElement("script");s.src="https://accounts.google.com/gsi/client";s.onload=resolve;s.onerror=reject;document.head.appendChild(s)})}
-async function getToken(){let clientId=localStorage.getItem(GKEY);if(!clientId){toast("Masukkan Google Client ID dulu");throw Error("client id missing")}await loadGIS();return new Promise((resolve,reject)=>{tokenClient=google.accounts.oauth2.initTokenClient({client_id:clientId,scope:"https://www.googleapis.com/auth/drive.file",callback:r=>r.error?reject(Error(r.error)):resolve(r.access_token)});tokenClient.requestAccessToken({prompt:"consent"})})}
-async function driveFind(token){let q=encodeURIComponent("name='KUIS-N2-DATABASE.json' and trashed=false");let r=await fetch("https://www.googleapis.com/drive/v3/files?q="+q+"&fields=files(id,name,modifiedTime)&pageSize=10",{headers:{Authorization:"Bearer "+token}});if(!r.ok)throw Error("Drive search failed");let j=await r.json();return j.files?.[0]||null}
-async function driveSave(token){let existing=await driveFind(token),meta={name:"KUIS-N2-DATABASE.json",mimeType:"application/json"},body=JSON.stringify({version:2,exportedAt:new Date().toISOString(),vocabulary:DB});let url,method;if(existing){url="https://www.googleapis.com/upload/drive/v3/files/"+existing.id+"?uploadType=multipart";method="PATCH"}else{url="https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart";method="POST"}let boundary="kuisN2Boundary"+Date.now(),payload="--"+boundary+"\\r\\nContent-Type: application/json; charset=UTF-8\\r\\n\\r\\n"+JSON.stringify(meta)+"\\r\\n--"+boundary+"\\r\\nContent-Type: application/json\\r\\n\\r\\n"+body+"\\r\\n--"+boundary+"--";let r=await fetch(url,{method,headers:{Authorization:"Bearer "+token,"Content-Type":"multipart/related; boundary="+boundary},body:payload});if(!r.ok)throw Error("Drive upload failed");return await r.json()}
-async function driveLoad(token){let f=await driveFind(token);if(!f)throw Error("KUIS-N2-DATABASE.json tidak ditemukan");let r=await fetch("https://www.googleapis.com/drive/v3/files/"+f.id+"?alt=media",{headers:{Authorization:"Bearer "+token}});if(!r.ok)throw Error("Drive download failed");let j=await r.json(),rows=Array.isArray(j)?j:j.vocabulary;if(!Array.isArray(rows))throw Error("Format database Drive tidak valid");DB=rows.map(normalize);saveAll();return DB.length}
-async function driveAction(action){let status=document.getElementById("driveStatus");try{status.textContent="Menghubungkan ke Google...";accessToken=await getToken();if(action==="save"){let r=await driveSave(accessToken);status.textContent="Tersimpan di Google Drive: "+new Date().toLocaleString("id-ID");toast("Database tersimpan ☁️")}else{let n=await driveLoad(accessToken);status.textContent=`Database dimuat: ${n.toLocaleString()} kata`;toast("Database dimuat ☁️");dbView()}}catch(e){status.textContent="Drive: "+(e.message||"gagal");toast("Google Drive gagal terhubung")}}
 function show(v){clearInterval(timer);if(v==="home")home();else if(v==="quiz")quizMenu();else if(v==="flash")flashView();else if(v==="list")listView();else if(v==="db")dbView();else progressView()}
 home();
 })();
