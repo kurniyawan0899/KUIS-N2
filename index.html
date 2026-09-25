@@ -142,4 +142,79 @@ home();
 })();
 </script>
 <script>if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js"));</script>
-</body></html>
+<script>
+/* ===== FLASHCARD PATCH ===== */
+(function () {
+  let lastCard = null;
+
+  function fixFlashcard() {
+    const card = document.getElementById("fc");
+    if (!card || card === lastCard) return;
+
+    lastCard = card;
+
+    let startX = 0;
+    let startY = 0;
+    let swiping = false;
+
+    /* TAP = FLIP */
+    card.addEventListener("click", function () {
+      if (swiping) {
+        swiping = false;
+        return;
+      }
+
+      if (typeof flash === "undefined") return;
+
+      flash.flipped = !flash.flipped;
+
+      if (typeof flashView === "function") {
+        flashView();
+      }
+    });
+
+    /* SWIPE */
+    card.addEventListener("touchstart", function (e) {
+      const t = e.changedTouches[0];
+      startX = t.clientX;
+      startY = t.clientY;
+      swiping = false;
+    }, { passive: true });
+
+    card.addEventListener("touchend", function (e) {
+      const t = e.changedTouches[0];
+
+      const dx = t.clientX - startX;
+      const dy = t.clientY - startY;
+
+      if (
+        Math.abs(dx) > 55 &&
+        Math.abs(dx) > Math.abs(dy)
+      ) {
+        swiping = true;
+
+        if (typeof flashMove === "function") {
+          flashMove(dx < 0 ? 1 : -1);
+        }
+      }
+    }, { passive: true });
+  }
+
+  /* Flashcard dibuat ulang setiap kali pindah kartu,
+     jadi kita cek kembali setelah perubahan halaman. */
+  const observer = new MutationObserver(function () {
+    fixFlashcard();
+  });
+
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true
+  });
+
+  document.addEventListener("click", function () {
+    setTimeout(fixFlashcard, 50);
+  });
+
+  setTimeout(fixFlashcard, 300);
+})();
+</script>/body></html>
