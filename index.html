@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f7e9ef">
+<title>KUIS N2 — Quiz</title>
+<link rel="manifest" href="manifest.webmanifest">
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,"Noto Sans JP",sans-serif;background:#fff7fa;color:#3b3035}button,select{font:inherit}.app{max-width:760px;margin:auto;padding:18px 14px 40px}.head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}.brand{font-size:26px;font-weight:900}.sub{font-size:13px;color:#8b747d}.card{background:#fff;border:1px solid #eadce2;border-radius:22px;padding:18px;box-shadow:0 8px 24px rgba(90,50,70,.07);margin-bottom:14px}.title{font-size:21px;font-weight:900;margin:0 0 5px}.muted{color:#88757d;font-size:13px}.section{font-weight:900;margin:18px 2px 9px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.choices{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.choice,.daybtn{border:1px solid #dfd0d7;background:#fff;border-radius:14px;padding:12px;text-align:center;cursor:pointer}.choice.active,.daybtn.active{background:#f3dce5;border-color:#c995aa;font-weight:900}.start{width:100%;border:0;border-radius:16px;padding:15px;background:#8d6072;color:#fff;font-weight:900;cursor:pointer;font-size:17px}.danger{background:#fff0f2;color:#a34761;border:1px solid #edc8d2}.topbar{display:flex;justify-content:space-between;align-items:center;gap:10px}.pill{padding:7px 11px;border-radius:999px;background:#f5e6ec;font-size:13px;font-weight:800}.timer{font-size:34px;font-weight:1000;text-align:center;margin:8px 0;color:#81596a}.progress{height:8px;background:#eee3e7;border-radius:99px;overflow:hidden;margin:10px 0 18px}.bar{height:100%;background:#b77c94;width:0;transition:width .2s}.qbox{text-align:center;padding:24px 10px}.qmain{font-size:44px;font-weight:900;line-height:1.25;word-break:break-word}.qsmall{font-size:14px;color:#8b747d;margin-top:7px}.answers{display:grid;gap:10px;margin-top:16px}.answer{border:1px solid #decfd6;background:#fff;border-radius:16px;padding:16px;text-align:left;cursor:pointer;min-height:58px}.answer:hover{background:#fcf4f7}.answer.correct{background:#e8f5ec;border-color:#86bf98}.answer.wrong{background:#fff0f1;border-color:#df8b99}.answer:disabled{cursor:default}.feedback{text-align:center;font-weight:900;min-height:25px;margin:12px 0}.next{display:none;width:100%;border:0;border-radius:15px;padding:14px;background:#6e8190;color:#fff;font-weight:900;cursor:pointer}.result{text-align:center}.score{font-size:54px;font-weight:1000}.hidden{display:none!important}.smallbtn{border:1px solid #dfd0d7;background:#fff;border-radius:12px;padding:9px 12px;cursor:pointer}.note{padding:11px 13px;border-radius:13px;background:#faf1f5;color:#765f68;font-size:13px;margin-top:10px}.error{background:#fff0f0;border-color:#e5a3aa;color:#8d3444}.footer{text-align:center;color:#9a858d;font-size:12px;margin-top:18px}
+@media(max-width:500px){.qmain{font-size:36px}.choices,.grid{grid-template-columns:1fr}.app{padding:14px 11px 30px}}
+</style>
+</head>
+<body>
+<div id="app" class="app"></div>
+<script src="data.js"></script>
+<script>
+(function(){
+'use strict';
+const APP=document.getElementById('app');
+const DATA=Array.isArray(window.KANJI_DATA)?window.KANJI_DATA:[];
+const STORE='kuisN2_quiz_only_v1';
+let state={history:[],correct:0,total:0};
+try{state=Object.assign(state,JSON.parse(localStorage.getItem(STORE)||'{}'));}catch(e){}
+let cfg={day:'all',mode:'kr',seconds:30,count:20};
+let quiz=null,timer=null,locked=false;
+
+function esc(v){return String(v==null?'':v).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function save(){try{localStorage.setItem(STORE,JSON.stringify(state))}catch(e){}}
+function shuffle(a){let x=a.slice();for(let i=x.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));let t=x[i];x[i]=x[j];x[j]=t}return x}
+function norm(x,i){return {id:x&&x.id!=null?x.id:i+1,day:Number(x&&x.day)||0,no:Number(x&&x.no)||i+1,kanji:String(x&&x.kanji||''),reading:String(x&&x.reading||x&&x.furigana||''),meaning:String(x&&x.meaning||'')}}
+const WORDS=DATA.map(norm).filter(x=>x.kanji||x.reading||x.meaning);
+function wordsForDay(day){return day==='all'?WORDS:WORDS.filter(x=>String(x.day)===String(day))}
+function days(){return Array.from(new Set(WORDS.map(x=>x.day).filter(Boolean))).sort((a,b)=>a-b)}
+function valsFor(q){if(cfg.mode==='kr')return q.reading;if(cfg.mode==='rk')return q.kanji;return q.meaning}
+function promptFor(q){if(cfg.mode==='kr')return {main:q.kanji,label:'Pilih cara baca yang benar'};if(cfg.mode==='rk')return {main:q.reading,label:'Pilih Kanji yang benar'};return {main:q.kanji,label:'Pilih arti yang benar'}}
+function buildOptions(q){let correct=valsFor(q);let pool=[];for(let i=0;i<WORDS.length;i++){let v=valsFor(WORDS[i]);if(v&&v!==correct)pool.push(v)}pool=Array.from(new Set(pool));return shuffle([correct].concat(shuffle(pool).slice(0,3)))}
+function page(html){APP.innerHTML=html;window.scrollTo(0,0)}
+function home(){clearInterval(timer);quiz=null;page('<div class="head"><div><div class="brand">🎌 KUIS N2</div><div class="sub">Quiz kosakata JLPT N2</div></div><div class="pill">'+WORDS.length.toLocaleString()+' kata</div></div><div class="card"><div class="title">Quiz</div><div class="muted">Pilih Day, mode soal, waktu per soal, dan jumlah soal.</div><div class="note '+(WORDS.length===3320?'':'error')+'">'+(WORDS.length===3429?'✓ Database terbaru: 3.429 kosakata':'⚠ Database terdeteksi: '+WORDS.length+' kosakata')+'</div></div><div class="section">Day</div><div class="choices" id="days"><button class="daybtn '+(cfg.day==='all'?'active':'')+'" data-day="all">Semua Day</button>'+days().map(d=>'<button class="daybtn '+(String(cfg.day)===String(d)?'active':'')+'" data-day="'+d+'">Day '+d+' ('+wordsForDay(d).length+')</button>').join('')+'</div><div class="section">Mode Soal</div><div class="choices" id="modes"><button class="choice '+(cfg.mode==='kr'?'active':'')+'" data-mode="kr">Kanji → Reading</button><button class="choice '+(cfg.mode==='rk'?'active':'')+'" data-mode="rk">Reading → Kanji</button><button class="choice '+(cfg.mode==='km'?'active':'')+'" data-mode="km">Kanji → Arti</button></div><div class="section">Timer per soal</div><div class="choices" id="times"><button class="choice '+(cfg.seconds===10?'active':'')+'" data-time="10">10 detik</button><button class="choice '+(cfg.seconds===20?'active':'')+'" data-time="20">20 detik</button><button class="choice '+(cfg.seconds===30?'active':'')+'" data-time="30">30 detik</button><button class="choice '+(cfg.seconds===60?'active':'')+'" data-time="60">60 detik</button></div><div class="section">Jumlah soal</div><div class="choices" id="counts"><button class="choice '+(cfg.count===10?'active':'')+'" data-count="10">10</button><button class="choice '+(cfg.count===20?'active':'')+'" data-count="20">20</button><button class="choice '+(cfg.count===50?'active':'')+'" data-count="50">50</button><button class="choice '+(cfg.count===100?'active':'')+'" data-count="100">100</button></div><div style="margin-top:18px"><button class="start" id="start">▶ Mulai Quiz</button></div><div class="footer">Progress quiz tersimpan di perangkat ini.</div>');
+APP.querySelectorAll('[data-day]').forEach(b=>b.onclick=function(){cfg.day=this.dataset.day;home()});
+APP.querySelectorAll('[data-mode]').forEach(b=>b.onclick=function(){cfg.mode=this.dataset.mode;home()});
+APP.querySelectorAll('[data-time]').forEach(b=>b.onclick=function(){cfg.seconds=Number(this.dataset.time);home()});
+APP.querySelectorAll('[data-count]').forEach(b=>b.onclick=function(){cfg.count=Number(this.dataset.count);home()});
+APP.querySelector('#start').onclick=startQuiz;
+}
+function startQuiz(){let pool=wordsForDay(cfg.day);if(!pool.length){alert('Day ini belum memiliki kosakata.');return}let n=Math.min(cfg.count,pool.length);quiz={items:shuffle(pool).slice(0,n),i:0,score:0,seconds:cfg.seconds,remaining:cfg.seconds};renderQuestion()}
+function renderQuestion(){clearInterval(timer);locked=false;let q=quiz.items[quiz.i],p=promptFor(q),opts=buildOptions(q);page('<div class="topbar"><button class="smallbtn" id="quit">← Keluar</button><div class="pill">'+(quiz.i+1)+' / '+quiz.items.length+'</div></div><div class="progress"><div class="bar" style="width:'+((quiz.i)/quiz.items.length*100)+'%"></div></div><div class="card"><div class="timer" id="timer">'+quiz.seconds+'</div><div class="qbox"><div class="qmain">'+esc(p.main)+'</div><div class="qsmall">'+esc(p.label)+'</div></div><div class="answers" id="answers">'+opts.map((o,i)=>'<button class="answer" data-answer="'+i+'">'+esc(o)+'</button>').join('')+'</div><div class="feedback" id="feedback"></div><button class="next" id="next">Lanjut →</button></div><div class="footer">Day '+esc(q.day)+' · '+esc(q.no)+'</div>');
+APP.querySelector('#quit').onclick=function(){if(confirm('Keluar dari quiz?'))home()};
+let buttons=Array.from(APP.querySelectorAll('[data-answer]'));buttons.forEach(function(b){b.onclick=function(){answer(Number(this.dataset.answer),opts,q)}});
+quiz.remaining=quiz.seconds;timer=setInterval(function(){quiz.remaining--;let el=document.getElementById('timer');if(el)el.textContent=quiz.remaining;if(quiz.remaining<=0){clearInterval(timer);if(!locked)answer(-1,opts,q)}},1000);
+}
+function answer(index,opts,q){if(locked)return;locked=true;clearInterval(timer);let correct=valsFor(q),chosen=index>=0?opts[index]:'';let buttons=Array.from(APP.querySelectorAll('[data-answer]'));buttons.forEach(function(b,i){b.disabled=true;if(opts[i]===correct)b.classList.add('correct');if(i===index&&chosen!==correct)b.classList.add('wrong')});let ok=chosen===correct;if(ok){quiz.score++;state.correct=(state.correct||0)+1}state.total=(state.total||0)+1;state.history=state.history||[];state.history.push({day:q.day,id:q.id,ok:ok,at:new Date().toISOString()});if(state.history.length>500)state.history=state.history.slice(-500);save();document.getElementById('feedback').textContent=ok?'✓ Benar!':(index<0?'⏰ Waktu habis':'✕ Jawaban: '+correct);let next=document.getElementById('next');next.style.display='block';next.textContent=quiz.i===quiz.items.length-1?'Lihat Hasil →':'Lanjut →';next.onclick=function(){quiz.i++;if(quiz.i>=quiz.items.length)showResult();else renderQuestion()}}
+function showResult(){clearInterval(timer);let total=quiz.items.length,score=quiz.score,pct=Math.round(score/total*100);page('<div class="card result"><div class="title">Quiz Selesai 🎉</div><div class="score">'+score+' / '+total+'</div><div style="font-size:20px;font-weight:900">'+pct+'%</div><div class="note">Day: '+(cfg.day==='all'?'Semua':cfg.day)+' · Timer: '+cfg.seconds+' detik · Jumlah: '+total+' soal</div><div style="margin-top:18px;display:grid;gap:10px"><button class="start" id="again">↻ Ulangi Quiz</button><button class="smallbtn" id="home">← Kembali ke Pengaturan</button></div></div>');document.getElementById('again').onclick=startQuiz;document.getElementById('home').onclick=home}
+home();
+})();
+</script>
+</body>
+</html>
