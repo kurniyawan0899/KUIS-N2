@@ -26,8 +26,9 @@ function normalize(x,i){return{id:String(x.id??("v"+i)),day:Number(x.day)||0,no:
 function loadDB(){try{const x=JSON.parse(localStorage.getItem(DBKEY)||"null");if(Array.isArray(x)&&x.length)return x}catch(e){}return BUILTIN}
 function loadJSON(k,f){try{return JSON.parse(localStorage.getItem(k))??f}catch(e){return f}}
 let DB=loadDB(),progress=loadJSON(PKEY,{seen:{},repeat:{},sessions:[]}),quiz=null,timer=null;
-function sanitizeProgress(){progress.seen=progress.seen||{};progress.repeat=progress.repeat||{};for(const d of Object.keys(progress.repeat)){const r=new Set((progress.repeat[d]||[]).map(String));progress.seen[d]=(progress.seen[d]||[]).map(String).filter(id=>!r.has(id))}}
-sanitizeProgress();
+// Keep legacy seen IDs intact during migration. Review status must not erase historical main progress.
+progress.seen=progress.seen||{};
+progress.repeat=progress.repeat||{};
 let flash={day:1,index:0,flipped:false};
 function saveAll(){localStorage.setItem(DBKEY,JSON.stringify(DB));localStorage.setItem(PKEY,JSON.stringify(progress))}
 function toast(t){TOAST.textContent=t;TOAST.classList.add("show");setTimeout(()=>TOAST.classList.remove("show"),1600)}
